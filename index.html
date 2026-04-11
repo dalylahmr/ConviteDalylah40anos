@@ -303,6 +303,74 @@ section { padding: 6rem 2rem; }
 .gallery-item:hover .gallery-overlay { opacity: 1; }
 .gallery-caption { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-pale); }
 
+/* ===== LIGHTBOX CINEMA ===== */
+#cinemaCurtain {
+  display: none; position: fixed; inset: 0; z-index: 99998;
+  background: rgba(0,0,0,0.97);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+#cinemaCurtain.open { display: flex; }
+.cinema-header {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+.cinema-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  color: #C9A84C; font-style: italic; letter-spacing: 0.05em;
+}
+.cinema-counter {
+  font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(201,168,76,0.6);
+  text-transform: uppercase;
+}
+.cinema-close {
+  background: none; border: 1px solid rgba(201,168,76,0.4); color: #C9A84C;
+  width: 36px; height: 36px; border-radius: 50%; font-size: 1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.cinema-close:hover { background: rgba(201,168,76,0.15); border-color: #C9A84C; }
+.cinema-stage {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.cinema-img {
+  max-width: 85vw; max-height: 80vh;
+  object-fit: contain;
+  filter: grayscale(20%) contrast(1.05);
+  transition: opacity 0.3s ease;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+.cinema-img.fading { opacity: 0; }
+.cinema-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: none; border: 1px solid rgba(201,168,76,0.3);
+  color: #C9A84C; font-size: 1.5rem; width: 48px; height: 48px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; z-index: 2;
+}
+.cinema-btn:hover { background: rgba(201,168,76,0.15); border-color: #C9A84C; }
+.cinema-btn.prev { left: 1rem; }
+.cinema-btn.next { right: 1rem; }
+.cinema-dots {
+  position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 0.5rem;
+}
+.cinema-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(201,168,76,0.3); cursor: pointer; transition: all 0.2s;
+}
+.cinema-dot.active { background: #C9A84C; transform: scale(1.3); }
+.cinema-filmstrip-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: rgba(201,168,76,0.15);
+}
+.cinema-filmstrip-progress {
+  height: 100%; background: #C9A84C;
+  transition: width 0.3s ease;
+}
+
 /* ===== CALCADA DA FAMA ===== */
 #calcada { background: var(--black-soft); }
 .stars-walk { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 3rem; justify-content: center; }
@@ -723,6 +791,24 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <p class="footer-date">16.05.2026</p>
 </footer>
 
+<!-- LIGHTBOX CINEMA -->
+<div id="cinemaCurtain">
+  <div class="cinema-header">
+    <span class="cinema-name" id="cinemaName"></span>
+    <span class="cinema-counter" id="cinemaCounter"></span>
+    <button class="cinema-close" id="cinemaClose">&#x2715;</button>
+  </div>
+  <div class="cinema-stage">
+    <button class="cinema-btn prev" id="cinemaPrev">&#8249;</button>
+    <img class="cinema-img" id="cinemaImg" src="" alt="">
+    <button class="cinema-btn next" id="cinemaNext">&#8250;</button>
+    <div class="cinema-dots" id="cinemaDots"></div>
+  </div>
+  <div class="cinema-filmstrip-bar">
+    <div class="cinema-filmstrip-progress" id="cinemaProgress"></div>
+  </div>
+</div>
+
 <!-- MODAL PRESENTE -->
 <div class="modal-overlay" id="presentModal">
   <div class="modal-box">
@@ -1030,6 +1116,36 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// ===== GALERIA / FILMSTRIP =====
+var galleryPhotos = [
+  { label: 'Dalylah',                    folder: 'Dalylah_solo' },
+  { label: '\u00c1gata',               folder: 'Agata' },
+  { label: 'Alenira & Joana',           folder: 'Alenira_e_Joana' },
+  { label: 'Amanda Furtado',            folder: 'Amanda_Furtado' },
+  { label: 'Amanda Santana',            folder: 'Amanda_Santana' },
+  { label: 'Cleide',                    folder: 'Cleide' },
+  { label: 'Dani & B\u00e1rbara',      folder: 'Dani_e_Barbara' },
+  { label: 'Deborah',                   folder: 'Deborah' },
+  { label: 'Ghilzi',                    folder: 'Ghilzi' },
+  { label: 'Giovana',                   folder: 'Giovana' },
+  { label: 'Gissely',                   folder: 'Gissely' },
+  { label: 'Jana\u00edna',             folder: 'Janaina' },
+  { label: 'Joyce',                     folder: 'Joyce' },
+  { label: 'Karen',                     folder: 'Karen' },
+  { label: 'Let\u00edcia',             folder: 'Leticia' },
+  { label: 'Lorena & L\u00edvia',      folder: 'Lorena_e_Livia' },
+  { label: 'Manoela',                   folder: 'Manoela' },
+  { label: 'Mirelly',                   folder: 'Mirelly' },
+  { label: 'N\u00fabia',               folder: 'Nubia' },
+  { label: 'Rebeca',                    folder: 'Rebeca' },
+  { label: 'Renata Falco',              folder: 'Renata_Falco' },
+  { label: 'Silvia',                    folder: 'Silvia' },
+  { label: 'Susana',                    folder: 'Susana' },
+  { label: 'Vivian',                    folder: 'Vivian' },
+  { label: 'V\u00e1rias Amigas',       folder: 'Varias_amigas' },
+  { label: 'Filipe & Mateus',           folder: 'Filipe_e_Mateus' },
+];
+
 // ===== FILMSTRIP =====
 function buildFilmstrip() {
   var strip = document.getElementById('filmstrip');
@@ -1075,35 +1191,6 @@ function buildFilmstrip() {
 buildFilmstrip();
 
 // ===== GALERIA =====
-var galleryPhotos = [
-  { label: 'Dalylah',                    folder: 'Dalylah_solo' },
-  { label: '\u00c1gata',               folder: 'Agata' },
-  { label: 'Alenira & Joana',           folder: 'Alenira_e_Joana' },
-  { label: 'Amanda Furtado',            folder: 'Amanda_Furtado' },
-  { label: 'Amanda Santana',            folder: 'Amanda_Santana' },
-  { label: 'Cleide',                    folder: 'Cleide' },
-  { label: 'Dani & B\u00e1rbara',      folder: 'Dani_e_Barbara' },
-  { label: 'Deborah',                   folder: 'Deborah' },
-  { label: 'Ghilzi',                    folder: 'Ghilzi' },
-  { label: 'Giovana',                   folder: 'Giovana' },
-  { label: 'Gissely',                   folder: 'Gissely' },
-  { label: 'Jana\u00edna',             folder: 'Janaina' },
-  { label: 'Joyce',                     folder: 'Joyce' },
-  { label: 'Karen',                     folder: 'Karen' },
-  { label: 'Let\u00edcia',             folder: 'Leticia' },
-  { label: 'Lorena & L\u00edvia',      folder: 'Lorena_e_Livia' },
-  { label: 'Manoela',                   folder: 'Manoela' },
-  { label: 'Mirelly',                   folder: 'Mirelly' },
-  { label: 'N\u00fabia',               folder: 'Nubia' },
-  { label: 'Rebeca',                    folder: 'Rebeca' },
-  { label: 'Renata Falco',              folder: 'Renata_Falco' },
-  { label: 'Silvia',                    folder: 'Silvia' },
-  { label: 'Susana',                    folder: 'Susana' },
-  { label: 'Vivian',                    folder: 'Vivian' },
-  { label: 'V\u00e1rias Amigas',       folder: 'Varias_amigas' },
-  { label: 'Filipe & Mateus',           folder: 'Filipe_e_Mateus' },
-];
-
 function buildGallery() {
   var grid = document.getElementById('galleryGrid');
   galleryPhotos.forEach(function(p) {
@@ -1129,10 +1216,108 @@ function buildGallery() {
     item.appendChild(img);
     item.appendChild(ph);
     item.appendChild(overlay);
+    // Clique abre o lightbox cinema
+    (function(folder, label) {
+      item.addEventListener('click', function() { openCinema(folder, label); });
+    })(p.folder, p.label);
     grid.appendChild(item);
   });
 }
 buildGallery();
+
+// ===== LIGHTBOX CINEMA =====
+var cinemaPhotos = [];
+var cinemaIdx = 0;
+var cinemaEl = document.getElementById('cinemaCurtain');
+var cinemaImg = document.getElementById('cinemaImg');
+var cinemaName = document.getElementById('cinemaName');
+var cinemaCounter = document.getElementById('cinemaCounter');
+var cinemaDots = document.getElementById('cinemaDots');
+var cinemaProgress = document.getElementById('cinemaProgress');
+
+function openCinema(folder, label) {
+  cinemaPhotos = [];
+  // Sempre tenta capa + foto2 ate foto4
+  var candidates = ['capa.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg'];
+  // Carrega todas e filtra as que existem via Image()
+  var loaded = 0;
+  var results = new Array(candidates.length).fill(null);
+  candidates.forEach(function(fname, i) {
+    var src = 'images/' + folder + '/' + fname;
+    var tst = new Image();
+    tst.onload = function() {
+      results[i] = src;
+      loaded++;
+      if (loaded === candidates.length) showCinema(label, results.filter(Boolean));
+    };
+    tst.onerror = function() {
+      results[i] = null;
+      loaded++;
+      if (loaded === candidates.length) showCinema(label, results.filter(Boolean));
+    };
+    tst.src = src;
+  });
+}
+
+function showCinema(label, photos) {
+  if (!photos.length) return;
+  cinemaPhotos = photos;
+  cinemaIdx = 0;
+  cinemaName.textContent = label;
+  // Dots
+  cinemaDots.innerHTML = '';
+  photos.forEach(function(_, i) {
+    var dot = document.createElement('div');
+    dot.className = 'cinema-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = function() { goTo(i); };
+    cinemaDots.appendChild(dot);
+  });
+  // Esconde setas se so uma foto
+  document.getElementById('cinemaPrev').style.display = photos.length > 1 ? '' : 'none';
+  document.getElementById('cinemaNext').style.display = photos.length > 1 ? '' : 'none';
+  renderCinema();
+  cinemaEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderCinema() {
+  cinemaImg.classList.add('fading');
+  setTimeout(function() {
+    cinemaImg.src = cinemaPhotos[cinemaIdx];
+    cinemaImg.alt = cinemaName.textContent;
+    cinemaCounter.textContent = (cinemaIdx + 1) + ' / ' + cinemaPhotos.length;
+    cinemaProgress.style.width = ((cinemaIdx + 1) / cinemaPhotos.length * 100) + '%';
+    // Atualizar dots
+    var dots = cinemaDots.querySelectorAll('.cinema-dot');
+    dots.forEach(function(d, i) {
+      d.classList.toggle('active', i === cinemaIdx);
+    });
+    cinemaImg.classList.remove('fading');
+  }, 200);
+}
+
+function goTo(idx) {
+  cinemaIdx = (idx + cinemaPhotos.length) % cinemaPhotos.length;
+  renderCinema();
+}
+
+document.getElementById('cinemaNext').addEventListener('click', function() { goTo(cinemaIdx + 1); });
+document.getElementById('cinemaPrev').addEventListener('click', function() { goTo(cinemaIdx - 1); });
+document.getElementById('cinemaClose').addEventListener('click', closeCinema);
+cinemaEl.addEventListener('click', function(e) { if (e.target === cinemaEl) closeCinema(); });
+
+document.addEventListener('keydown', function(e) {
+  if (!cinemaEl.classList.contains('open')) return;
+  if (e.key === 'ArrowRight') goTo(cinemaIdx + 1);
+  if (e.key === 'ArrowLeft')  goTo(cinemaIdx - 1);
+  if (e.key === 'Escape')     closeCinema();
+});
+
+function closeCinema() {
+  cinemaEl.classList.remove('open');
+  document.body.style.overflow = '';
+  cinemaImg.src = '';
+}
 
 // ===== CALCADA DA FAMA =====
 function loadFame() {
