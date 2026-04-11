@@ -1031,29 +1031,45 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 // ===== FILMSTRIP =====
-var filmPhotos = [
-  'Dalylah Solo', 'com Alenira Maciel', 'com Joana Gai\u00e3o', 'com Vivian Duarte',
-  'com Amanda Santana', 'com Rebeca Vital', 'com Deborah Em\u00edlia', 'com N\u00fabia Souza',
-  'com Laura Freitas', 'Cosplay Peruca Rosa', 'Turma do Turbante', 'WHAAT! \u2014 Amanda, Rebeca',
-  'Mulheres na Tecnologia', 'com Gissely Soares', 'com Renata Falco', 'com Babi e Dany',
-];
-
 function buildFilmstrip() {
   var strip = document.getElementById('filmstrip');
-  var all = filmPhotos.concat(filmPhotos);
-  all.forEach(function(name) {
+  var all = galleryPhotos.concat(galleryPhotos);
+  all.forEach(function(p) {
+    var src = 'images/' + p.folder + '/capa.jpg';
     var sprockets = '<div class="film-sprocket"></div>'.repeat(5);
-    strip.insertAdjacentHTML('beforeend',
-      '<div class="film-frame">' +
-        '<div class="film-sprockets">' + sprockets + '</div>' +
-        '<div class="film-photo-placeholder">' +
-          '<span class="ph-icon">&#9733;</span>' +
-          '<span class="ph-name">' + name + '</span>' +
-        '</div>' +
-        '<div class="film-sprockets">' + sprockets + '</div>' +
-        '<div class="film-caption">' + name + '</div>' +
-      '</div>'
-    );
+    var frame = document.createElement('div');
+    frame.className = 'film-frame';
+    var sp1 = document.createElement('div');
+    sp1.className = 'film-sprockets';
+    sp1.innerHTML = sprockets;
+    var sp2 = document.createElement('div');
+    sp2.className = 'film-sprockets';
+    sp2.innerHTML = sprockets;
+    var caption = document.createElement('div');
+    caption.className = 'film-caption';
+    caption.textContent = p.label;
+    var imgWrap = document.createElement('div');
+    imgWrap.className = 'film-photo-placeholder';
+    imgWrap.style.overflow = 'hidden';
+    imgWrap.style.padding = '0';
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = p.label;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(100%)';
+    var ph = document.createElement('div');
+    ph.style.cssText = 'display:none;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;width:100%;height:100%';
+    ph.innerHTML = '<span style="font-size:1.5rem;opacity:0.2">&#9733;</span><span style="font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.6;text-align:center">' + p.label + '</span>';
+    img.onerror = function() {
+      this.style.display = 'none';
+      ph.style.display = 'flex';
+    };
+    imgWrap.appendChild(img);
+    imgWrap.appendChild(ph);
+    frame.appendChild(sp1);
+    frame.appendChild(imgWrap);
+    frame.appendChild(sp2);
+    frame.appendChild(caption);
+    strip.appendChild(frame);
   });
 }
 buildFilmstrip();
