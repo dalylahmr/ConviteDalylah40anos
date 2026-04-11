@@ -1055,26 +1055,47 @@ buildFilmstrip();
 
 // ===== GALERIA =====
 var galleryPhotos = [
-  'Dalylah Solo', 'Dalylah & Alenira Maciel', 'Dalylah & Joana Gai\u00e3o',
-  'Dalylah & Vivian Duarte', 'Dalylah & Amanda Santana', 'Dalylah & Rebeca Vital',
-  'Dalylah & Deborah Em\u00edlia', 'Dalylah & N\u00fabia Souza', 'Dalylah & Laura Freitas',
-  'Cosplay: Peruca Rosa & Vaquinha', 'Turma do Turbante', 'WHAAT! \u2014 Amanda, Rebeca & Dalylah',
-  'Mulheres na Tecnologia', 'Dalylah & Gissely Soares', 'Dalylah & Renata Falco',
-  'Dalylah, Babi & Dany', 'Dalylah & Luana Bonfim', 'Dalylah & Rayssa Guth',
-  'Dalylah & Ghilzi Ferreira', 'Dalylah & Giovana', 'Dalylah & Giselle Abreu',
-  'Dalylah & Sandra', 'Dalylah & Sinderley', 'Turma da Palestra',
+  { label: 'Dalylah',              folder: 'Dalylah_solo' },
+  { label: 'Ágata',                folder: 'Agata' },
+  { label: 'Alenira & Joana',      folder: 'Alenira_e_Joana' },
+  { label: 'Amanda Furtado',       folder: 'Amanda_Furtado' },
+  { label: 'Amanda Santana',       folder: 'Amanda_Santana' },
+  { label: 'Cleide',               folder: 'Cleide' },
+  { label: 'Dani & Bárbara',      folder: 'Dani_e_Barbara' },
+  { label: 'Deborah',              folder: 'Deborah' },
+  { label: 'Ghilzi',              folder: 'Ghilzi' },
+  { label: 'Giovana',              folder: 'Giovana' },
+  { label: 'Gissely',              folder: 'Gissely' },
+  { label: 'Janaína',             folder: 'Janaina' },
+  { label: 'Joyce',                folder: 'Joyce' },
+  { label: 'Karen',                folder: 'Karen' },
+  { label: 'Letícia',             folder: 'Leticia' },
+  { label: 'Lorena & Lívia',      folder: 'Lorena_e_Livia' },
+  { label: 'Manoela',              folder: 'Manoela' },
+  { label: 'Mirelly',              folder: 'Mirelly' },
+  { label: 'Núbia',               folder: 'Nubia' },
+  { label: 'Rebeca',               folder: 'Rebeca' },
+  { label: 'Renata Falco',         folder: 'Renata_Falco' },
+  { label: 'Silvia',               folder: 'Silvia' },
+  { label: 'Susana',               folder: 'Susana' },
+  { label: 'Vivian',               folder: 'Vivian' },
+  { label: 'Várias Amigas',       folder: 'Varias_amigas' },
+  { label: 'Filipe & Mateus',      folder: 'Filipe_e_Mateus' },
 ];
 
 function buildGallery() {
   var grid = document.getElementById('galleryGrid');
-  galleryPhotos.forEach(function(label) {
+  galleryPhotos.forEach(function(p) {
+    var src = 'images/' + p.folder + '/capa.jpg';
     grid.insertAdjacentHTML('beforeend',
-      '<div class="gallery-item">' +
-        '<div class="gallery-item-placeholder">' +
+      '<div class="gallery-item" data-src="' + src + '" onclick="if(typeof GLightbox!=='undefined'){}">' +
+        '<img src="' + src + '" alt="' + p.label + '" loading="lazy" ' +
+          'onerror="this.style.display='none';this.nextSibling.style.display='flex'">' +
+        '<div class="gallery-item-placeholder" style="display:none">' +
           '<span class="ph-star">&#9733;</span>' +
-          '<span class="ph-person">' + label + '</span>' +
+          '<span class="ph-person">' + p.label + '</span>' +
         '</div>' +
-        '<div class="gallery-overlay"><span class="gallery-caption">' + label + '</span></div>' +
+        '<div class="gallery-overlay"><span class="gallery-caption">' + p.label + '</span></div>' +
       '</div>'
     );
   });
