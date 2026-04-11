@@ -763,34 +763,39 @@ var playerProgress = document.getElementById('playerProgress');
 var audioStarted = false;
 
 document.getElementById('enterBtn').addEventListener('click', function() {
-  // 1. Play PRIMEIRO - ainda dentro do evento de clique sincrono
-  if (!audioStarted) {
+  // Audio: tenta tocar mas nao bloqueia a animacao em caso de erro
+  try {
     bgAudio.volume = 0.45;
-    bgAudio.play().then(function() {
-      playerEl.classList.add('visible');
-      audioStarted = true;
-    }).catch(function() {
-      playerEl.classList.add('visible');
-      playPauseBtn.innerHTML = '&#9654;';
-    });
-  }
+    var playPromise = bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        audioStarted = true;
+        playerEl.classList.add('visible');
+      }).catch(function() {
+        playerEl.classList.add('visible');
+        playPauseBtn.innerHTML = '&#9654;';
+      });
+    }
+  } catch(e) {}
 
-  // 2. Animacao das cortinas
+  // Animacao das cortinas -- independente do audio
   var screen = document.getElementById('enterScreen');
   screen.classList.add('leaving');
 
-  // 3. Esconde tela de entrada e dispara paparazzi
+  // Esconde tela e dispara paparazzi
   setTimeout(function() {
     screen.style.display = 'none';
-    var overlay = document.getElementById('paparazzi-overlay');
-    overlay.style.animation = 'none';
-    overlay.style.display = 'block';
-    void overlay.offsetWidth;
-    overlay.style.animation = 'paparazziFlash 1.6s forwards';
-    setTimeout(function() {
-      overlay.style.display = 'none';
-      overlay.style.animation = '';
-    }, 1600);
+    try {
+      var overlay = document.getElementById('paparazzi-overlay');
+      overlay.style.animation = 'none';
+      overlay.style.display = 'block';
+      void overlay.offsetWidth;
+      overlay.style.animation = 'paparazziFlash 1.6s forwards';
+      setTimeout(function() {
+        overlay.style.display = 'none';
+        overlay.style.animation = '';
+      }, 1600);
+    } catch(e) {}
   }, 1400);
 });
 
