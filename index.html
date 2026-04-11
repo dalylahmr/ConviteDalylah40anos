@@ -1218,10 +1218,10 @@ function buildGallery() {
     item.appendChild(img);
     item.appendChild(ph);
     item.appendChild(overlay);
-    // Clique abre o lightbox cinema
-    (function(folder, label) {
-      item.addEventListener('click', function() { openCinema(folder, label); });
-    })(p.folder, p.label);
+    // Lightbox desativado temporariamente
+    // (function(folder, label) {
+    //   item.addEventListener('click', function() { openCinema(folder, label); });
+    // })(p.folder, p.label);
     grid.appendChild(item);
   });
 }
