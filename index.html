@@ -247,22 +247,27 @@ section { padding: 6rem 2rem; }
 
 /* ===== FILMSTRIP ===== */
 #estrela { background: var(--black); overflow: hidden; }
+#filmstrip2-section { background: var(--black-soft); overflow: hidden; padding: 4rem 0; }
 .filmstrip-wrapper { position: relative; overflow: hidden; margin: 3rem -2rem; }
-.filmstrip { display: flex; gap: 0; animation: filmRoll 35s linear infinite; width: max-content; }
+.filmstrip { display: flex; gap: 0; animation: filmRoll 50s linear infinite; width: max-content; }
+.filmstrip.reverse { animation: filmRollReverse 45s linear infinite; }
 .filmstrip:hover { animation-play-state: paused; }
 @keyframes filmRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-.film-frame { width: 220px; flex-shrink: 0; background: #000; border-left: 3px solid #1a1a1a; position: relative; }
-.film-sprockets { height: 18px; background: #0a0a0a; display: flex; align-items: center; justify-content: space-around; padding: 0 8px; }
-.film-sprocket { width: 10px; height: 8px; background: #222; border-radius: 2px; border: 1px solid #333; }
-.film-photo { width: 100%; height: 160px; object-fit: cover; display: block; filter: grayscale(100%) contrast(1.1); }
+@keyframes filmRollReverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.film-frame { width: 160px; flex-shrink: 0; background: #000; border-left: 2px solid #1a1a1a; position: relative; cursor: pointer; }
+.film-sprockets { height: 16px; background: #0a0a0a; display: flex; align-items: center; justify-content: space-around; padding: 0 6px; }
+.film-sprocket { width: 9px; height: 7px; background: #222; border-radius: 2px; border: 1px solid #333; }
 .film-photo-placeholder {
-  width: 100%; height: 160px;
+  width: 100%; height: 240px;
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
 }
 .film-photo-placeholder .ph-icon { font-size: 2rem; opacity: 0.2; }
-.film-photo-placeholder .ph-name { font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); opacity: 0.6; text-align: center; padding: 0 0.5rem; }
-.film-caption { height: 28px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
+.film-photo-placeholder .ph-name { font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); opacity: 0.6; text-align: center; padding: 0 0.5rem; }
+.film-img-wrap { width: 100%; height: 240px; overflow: hidden; position: relative; }
+.film-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(100%) contrast(1.1); transition: filter 0.4s ease; }
+.film-img-wrap img.colorida { filter: grayscale(0%) contrast(1.05); }
+.film-caption { height: 26px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
 .estrela-title { text-align: center; margin-bottom: 1rem; }
 .estrela-name { font-family: var(--font-title); font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: var(--gold); display: block; line-height: 1; text-shadow: 0 0 60px rgba(201,168,76,0.3); }
 .estrela-sub { font-family: var(--font-accent); font-size: clamp(1rem, 2.5vw, 1.5rem); font-style: italic; color: var(--white-dim); letter-spacing: 0.1em; }
@@ -379,6 +384,10 @@ section { padding: 6rem 2rem; }
 .fame-star:hover .star-shape { opacity: 0.35; }
 .star-name { position: relative; z-index: 2; font-size: 0.45rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); text-align: center; padding: 0 0.3rem; line-height: 1.3; font-weight: 600; }
 .calcada-note { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: var(--white-dim); font-style: italic; letter-spacing: 0.1em; }
+.star-msg { font-size: 0.38rem; color: rgba(201,168,76,0.7); text-align: center; padding: 0 0.2rem; line-height: 1.3; font-style: italic; max-width: 80px; word-break: break-word; display: block; }
+.star-msg { font-size: 0.38rem; color: rgba(201,168,76,0.7); text-align: center; padding: 0 0.2rem; line-height: 1.3; font-style: italic; max-width: 80px; word-break: break-word; display: block; }
+.fame-star { width: 80px; flex-direction: column; gap: 0.2rem; }
+.star-msg { font-size: 0.38rem; color: rgba(201,168,76,0.7); text-align: center; padding: 0 0.2rem; line-height: 1.3; font-style: italic; max-width: 80px; word-break: break-word; }
 
 /* ===== RSVP ===== */
 #rsvp { background: var(--black); }
@@ -502,7 +511,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <div class="ticker-track">
     <span>Dalylah Rezende celebra 40 anos em grande estilo</span>
     <span class="dot">&#9733;</span>
-    <span>16 de Maio de 2026 &mdash; Edif&iacute;cio Newest, Goi&acirc;nia</span>
+    <span>16 de Maio de 2026 &mdash; Reserva Newest, Goi&acirc;nia</span>
     <span class="dot">&#9733;</span>
     <span>Dress code obrigat&oacute;rio: seu personagem favorito do cinema</span>
     <span class="dot">&#9733;</span>
@@ -512,7 +521,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
     <span class="dot">&#9733;</span>
     <span>Dalylah Rezende celebra 40 anos em grande estilo</span>
     <span class="dot">&#9733;</span>
-    <span>16 de Maio de 2026 &mdash; Edif&iacute;cio Newest, Goi&acirc;nia</span>
+    <span>16 de Maio de 2026 &mdash; Reserva Newest, Goi&acirc;nia</span>
     <span class="dot">&#9733;</span>
     <span>Dress code obrigat&oacute;rio: seu personagem favorito do cinema</span>
     <span class="dot">&#9733;</span>
@@ -530,7 +539,6 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
     <li><a href="#detalhes">Detalhes</a></li>
     <li><a href="#rsvp">Confirmar</a></li>
     <li><a href="#calcada">Cal&ccedil;ada da Fama</a></li>
-    <li><a href="#galeria">Galeria</a></li>
   </ul>
 </nav>
 
@@ -553,7 +561,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
       </div>
       <div class="hero-meta-item">
         <span class="hero-meta-label">Local</span>
-        <span class="hero-meta-value">Edif&iacute;cio Newest</span>
+        <span class="hero-meta-value">Reserva Newest</span>
       </div>
     </div>
   </div>
@@ -591,7 +599,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <div class="section-inner">
     <div class="estrela-title reveal">
       <span class="estrela-name">Dalylah Rezende</span>
-      <span class="estrela-sub">A estrela do filme da sua pr&oacute;pria vida</span>
+      <span class="estrela-sub">Voc&ecirc; &eacute; parte do filme da minha vida!</span>
     </div>
   </div>
   <div class="filmstrip-wrapper">
@@ -629,7 +637,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
         </div>
         <div class="clapper-row">
           <span class="clapper-key">Loca&ccedil;&atilde;o</span>
-          <span class="clapper-val">Edif&iacute;cio Newest<small>Av. Portugal, Setor Oeste, Goi&acirc;nia &mdash; GO</small></span>
+          <span class="clapper-val">Reserva Newest<small>Av. Portugal com Rua 12, n&ordm; 58, St. Oeste, Goi&acirc;nia</small></span>
         </div>
         <div class="clapper-row">
           <span class="clapper-key">Dress Code</span>
@@ -641,9 +649,12 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
         </div>
         <div class="clapper-row">
           <span class="clapper-key">Atividades</span>
-          <span class="clapper-val">Karaok&ecirc;, din&acirc;micas e premia&ccedil;&atilde;o<small>Melhores fantasias ser&atilde;o premiadas</small></span>
+          <span class="clapper-val">Muito pop rock, Karaok&ecirc;, fotos, flashs e premia&ccedil;&atilde;o<small>Melhores fantasias ser&atilde;o premiadas</small></span>
         </div>
       </div>
+    </div>
+    <div class="reveal" style="margin-top:2rem;border-radius:8px;overflow:hidden;border:1px solid rgba(201,168,76,0.2);">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3821.7745431954777!2d-49.27244372396081!3d-16.688161845599403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ef1cdb578874d%3A0xec4d4a324a52529e!2sReserva%20Newest!5e0!3m2!1spt-BR!2sbr!4v1776018493741!5m2!1spt-BR!2sbr" width="100%" height="320" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div class="dress-code-note reveal">
       <p>
@@ -654,17 +665,29 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   </div>
 </section>
 
+<!-- FILMSTRIP VARIAS AMIGAS -->
+<section id="filmstrip2-section">
+  <div class="section-inner" style="padding-bottom:0">
+    <span class="section-eyebrow reveal">Momentos Inesquec&iacute;veis</span>
+    <h2 class="section-title reveal">Nossas Hist&oacute;rias</h2>
+    <div class="gold-line reveal"></div>
+  </div>
+  <div class="filmstrip-wrapper">
+    <div class="filmstrip reverse" id="filmstrip2"></div>
+  </div>
+</section>
+
 <!-- RSVP -->
 <section id="rsvp" style="position:relative; overflow:hidden;">
   <canvas id="rsvpCanvas" style="position:absolute;top:0;left:0;pointer-events:none;z-index:0;"></canvas>
   <div class="section-inner" style="position:relative;z-index:1;">
     <span class="section-eyebrow reveal">Confirma&ccedil;&atilde;o de Presen&ccedil;a</span>
-    <h2 class="section-title reveal">Reserve Seu Lugar</h2>
+    <h2 class="section-title reveal">Voc&ecirc; est&aacute; na lista VIP desta grande estreia</h2>
     <div class="gold-line reveal"></div>
     <div class="rsvp-wrapper">
       <div class="rsvp-text reveal">
-        <p>Uma noite inesquec&iacute;vel onde a estrela &eacute; voc&ecirc;.<br>Vista-se para brilhar e venha fazer parte deste cap&iacute;tulo especial.</p>
-        <p>Escolha seu personagem, confirme sua presen&ccedil;a e prepare-se para o tapete vermelho.</p>
+        <p>Ser&aacute; uma honra viver a celebra&ccedil;&atilde;o dos meus 40 anos ao seu lado. A pedida da noite ser&aacute;: muita divers&atilde;o!</p>
+        <p>Uma noite inesquec&iacute;vel. Vista-se para brilhar e venha fazer parte deste cap&iacute;tulo especial.<br>Escolha seu personagem, confirme sua presen&ccedil;a e prepare-se para o tapete vermelho.</p>
         <span class="rsvp-deadline">Prazo: 30 de Abril de 2026</span>
       </div>
       <form class="rsvp-form reveal" id="rsvpForm" onsubmit="return false;">
@@ -684,6 +707,10 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
             <option value="nao">Infelizmente n&atilde;o poderei comparecer</option>
           </select>
         </div>
+        <div class="form-group">
+          <label class="form-label" for="mensagemEstrela">Mensagem para sua estrela <small style="color:var(--white-dim);font-size:0.6rem;">(m&aacute;x. 200 caracteres, opcional)</small></label>
+          <input class="form-input" type="text" id="mensagemEstrela" maxlength="200" placeholder="Uma frase que te define...">
+        </div>
         <button type="submit" class="btn-gold">Confirmar Presen&ccedil;a</button>
       </form>
     </div>
@@ -701,11 +728,12 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
     </p>
     <div class="stars-walk" id="starsWalk"></div>
     <p class="calcada-note reveal">Confirme sua presen&ccedil;a na se&ccedil;&atilde;o RSVP e ganhe sua estrela.</p>
+    <p class="calcada-note reveal" style="margin-top:0.5rem;">Ap&oacute;s confirmar, deixe uma mensagem curta que aparecer&aacute; na sua estrela.</p>
   </div>
 </section>
 
 <!-- GALERIA -->
-<section id="galeria">
+<section id="galeria" style="display:none">
   <div class="section-inner">
     <span class="section-eyebrow reveal">Arquivo Pessoal</span>
     <h2 class="section-title reveal">Galeria</h2>
@@ -730,32 +758,8 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
 </section>
 
 <!-- CRITICAS -->
-<section id="criticas">
+<section id="criticas" style="display:none">
   <div class="section-inner">
-    <span class="section-eyebrow reveal">Deixe sua opini&atilde;o</span>
-    <h2 class="section-title reveal">Cr&iacute;ticas de Cinema</h2>
-    <div class="gold-line reveal"></div>
-    <p class="reveal" style="color: var(--white-dim); font-size: 0.85rem; line-height: 1.7; max-width: 560px;">
-      Escreva uma mensagem para a Dalylah no estilo de uma cr&iacute;tica cinematogr&aacute;fica.
-    </p>
-    <div class="critica-list" id="criticaList">
-      <div class="critica-card reveal">
-        <div class="critica-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="critica-text">"Uma performance arrebatadora, de rara autenticidade. Quarenta anos de uma protagonista que transforma cada cena em obra de arte. Indispens&aacute;vel."</p>
-        <span class="critica-author">&#9733; Cr&iacute;tica da Reda&ccedil;&atilde;o</span>
-      </div>
-    </div>
-    <form class="critica-form reveal" id="criticaForm">
-      <div class="form-group">
-        <label class="form-label" for="criticaNome">Seu Nome</label>
-        <input class="form-input" type="text" id="criticaNome" placeholder="Cr&iacute;tica assinada por...">
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="criticaTexto">Sua Cr&iacute;tica</label>
-        <textarea class="form-textarea" id="criticaTexto" style="min-height:120px" placeholder="Uma das produ&ccedil;&otilde;es mais marcantes da d&eacute;cada..."></textarea>
-      </div>
-      <button type="button" class="btn-gold" onclick="submitCritica()">Publicar Cr&iacute;tica</button>
-    </form>
   </div>
 </section>
 
@@ -777,7 +781,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
       Ghilzi Ferreira &nbsp;&bull;&nbsp; Rafaela Gomes &nbsp;&bull;&nbsp; Carita Braga<br>
       Silvia &nbsp;&bull;&nbsp; Lorena &nbsp;&bull;&nbsp; Vivian<br><br>
       <span class="gold">Loca&ccedil;&atilde;o</span><br>
-      Edif&iacute;cio Newest &mdash; Goi&acirc;nia, GO<br><br>
+      Reserva Newest &mdash; Goi&acirc;nia, GO<br><br>
       <span class="gold">Trilha Sonora</span><br>
       Pop &amp; Pop Rock Internacional<br><br>
       <span class="red">Produ&ccedil;&atilde;o: 1986</span><br>
@@ -1141,49 +1145,72 @@ var galleryPhotos = [
   { label: 'V\u00e1rias Amigas', folder: 'Varias_amigas' },
 ];
 
-// ===== FILMSTRIP =====
+// ===== FILMSTRIP (amigas com Dalylah intercalada) =====
+function makeFilmFrame(src, label, stripEl) {
+  var sprockets = '<div class="film-sprocket"></div>'.repeat(5);
+  var frame = document.createElement('div');
+  frame.className = 'film-frame';
+  var sp1 = document.createElement('div'); sp1.className = 'film-sprockets'; sp1.innerHTML = sprockets;
+  var sp2 = document.createElement('div'); sp2.className = 'film-sprockets'; sp2.innerHTML = sprockets;
+  var caption = document.createElement('div'); caption.className = 'film-caption'; caption.textContent = label;
+  var wrap = document.createElement('div'); wrap.className = 'film-img-wrap';
+  var img = document.createElement('img'); img.src = src; img.alt = label; img.loading = 'lazy';
+  var ph = document.createElement('div'); ph.className = 'film-photo-placeholder'; ph.style.display = 'none';
+  ph.innerHTML = '<span class="ph-icon">&#9733;</span><span class="ph-name">' + label + '</span>';
+  img.onerror = function() { this.style.display = 'none'; ph.style.display = 'flex'; };
+  // Efeito colorido ao clicar
+  img.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var wasColor = img.classList.contains('colorida');
+    // Remove colorida de todas as fotos
+    document.querySelectorAll('.film-img-wrap img.colorida').forEach(function(el) { el.classList.remove('colorida'); });
+    if (!wasColor) img.classList.add('colorida');
+  });
+  wrap.appendChild(img); wrap.appendChild(ph);
+  frame.appendChild(sp1); frame.appendChild(wrap); frame.appendChild(sp2); frame.appendChild(caption);
+  stripEl.appendChild(frame);
+}
+
 function buildFilmstrip() {
   var strip = document.getElementById('filmstrip');
-  var all = galleryPhotos.concat(galleryPhotos);
+  var soloSrc = 'images/Dalylah_solo/capa.jpg';
+  // Intercalar: solo da Dalylah entre cada amiga (exclui Dalylah_solo do array de amigas)
+  var amigas = galleryPhotos.filter(function(p) { return p.folder !== 'Dalylah_solo'; });
+  var expanded = [];
+  amigas.forEach(function(p) {
+    expanded.push({ label: 'Dalylah', folder: 'Dalylah_solo', src: soloSrc });
+    expanded.push(p);
+  });
+  // Duplicar para loop infinito
+  var all = expanded.concat(expanded);
   all.forEach(function(p) {
-    var src = 'images/' + p.folder + '/capa.jpg';
-    var sprockets = '<div class="film-sprocket"></div>'.repeat(5);
-    var frame = document.createElement('div');
-    frame.className = 'film-frame';
-    var sp1 = document.createElement('div');
-    sp1.className = 'film-sprockets';
-    sp1.innerHTML = sprockets;
-    var sp2 = document.createElement('div');
-    sp2.className = 'film-sprockets';
-    sp2.innerHTML = sprockets;
-    var caption = document.createElement('div');
-    caption.className = 'film-caption';
-    caption.textContent = p.label;
-    var imgWrap = document.createElement('div');
-    imgWrap.className = 'film-photo-placeholder';
-    imgWrap.style.overflow = 'hidden';
-    imgWrap.style.padding = '0';
-    var img = document.createElement('img');
-    img.src = src;
-    img.alt = p.label;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(100%)';
-    var ph = document.createElement('div');
-    ph.style.cssText = 'display:none;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;width:100%;height:100%';
-    ph.innerHTML = '<span style="font-size:1.5rem;opacity:0.2">&#9733;</span><span style="font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.6;text-align:center">' + p.label + '</span>';
-    img.onerror = function() {
-      this.style.display = 'none';
-      ph.style.display = 'flex';
-    };
-    imgWrap.appendChild(img);
-    imgWrap.appendChild(ph);
-    frame.appendChild(sp1);
-    frame.appendChild(imgWrap);
-    frame.appendChild(sp2);
-    frame.appendChild(caption);
-    strip.appendChild(frame);
+    var src = p.src || ('images/' + p.folder + '/capa.jpg');
+    makeFilmFrame(src, p.label, strip);
   });
 }
 buildFilmstrip();
+
+// ===== FILMSTRIP 2 (Varias Amigas) =====
+function buildFilmstrip2() {
+  var strip = document.getElementById('filmstrip2');
+  if (!strip) return;
+  var fotos = [];
+  for (var i = 1; i <= 30; i++) {
+    fotos.push({ src: 'images/Varias_amigas/' + i + '.jpg', label: 'Nossas Hist\u00f3rias' });
+  }
+  var all = fotos.concat(fotos);
+  all.forEach(function(p) { makeFilmFrame(p.src, p.label, strip); });
+}
+buildFilmstrip2();
+
+// Scroll remove colorida
+window.addEventListener('scroll', function() {
+  document.querySelectorAll('.film-img-wrap img.colorida').forEach(function(el) { el.classList.remove('colorida'); });
+}, { passive: true });
+// Clique fora remove colorida
+document.addEventListener('click', function() {
+  document.querySelectorAll('.film-img-wrap img.colorida').forEach(function(el) { el.classList.remove('colorida'); });
+});
 
 // ===== GALERIA =====
 function buildGallery() {
@@ -1325,13 +1352,15 @@ var confirmedGuests = loadFame();
 function buildFame() {
   var walk = document.getElementById('starsWalk');
   walk.innerHTML = '';
-  confirmedGuests.forEach(function(name) {
-    walk.insertAdjacentHTML('beforeend',
-      '<div class="fame-star">' +
-        '<div class="star-shape"></div>' +
-        '<span class="star-name">' + name + '</span>' +
-      '</div>'
-    );
+  confirmedGuests.forEach(function(entry) {
+    var name = typeof entry === 'string' ? entry : entry.name;
+    var msg  = typeof entry === 'object' && entry.msg ? entry.msg : '';
+    var html = '<div class="fame-star">' +
+      '<div class="star-shape"></div>' +
+      '<span class="star-name">' + name + '</span>' +
+      (msg ? '<span class="star-msg">' + msg + '</span>' : '') +
+    '</div>';
+    walk.insertAdjacentHTML('beforeend', html);
   });
 }
 buildFame();
@@ -1441,8 +1470,13 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
   var btn = this.querySelector('button[type="submit"]');
   if (!nome || !conf) return;
   if (conf === 'sim') {
-    if (confirmedGuests.indexOf(nome) === -1) {
-      confirmedGuests.push(nome);
+    var existe = confirmedGuests.some(function(g) {
+      return (typeof g === 'string' ? g : g.name) === nome;
+    });
+    if (!existe) {
+      var msgEl = document.getElementById('mensagemEstrela');
+      var msgVal = msgEl ? msgEl.value.trim().substring(0, 200) : '';
+      confirmedGuests.push({ name: nome, msg: msgVal });
       saveFame(confirmedGuests);
       buildFame();
     }
