@@ -133,7 +133,10 @@ body { background: var(--black); color: var(--white); font-family: var(--font-bo
   font-family: var(--font-title);
   font-size: clamp(3rem, 10vw, 8rem);
   color: white; text-align: center;
-  opacity: 0; position: absolute; font-style: italic; padding: 0 2rem;
+  font-style: italic; padding: 0 2rem;
+}
+.intro-name-wrap {
+  position: absolute; display: flex; flex-direction: column; align-items: center;
 }
 
 /* ===== TICKER ===== */
@@ -246,28 +249,29 @@ section { padding: 6rem 2rem; }
 .gold-line { width: 60px; height: 2px; background: var(--gold); margin-bottom: 2rem; }
 
 /* ===== FILMSTRIP ===== */
-#estrela { background: var(--black); overflow: hidden; }
+#estrela { background: var(--black); overflow: hidden; padding-bottom: 0 !important; }
 #filmstrip2-section { background: var(--black-soft); overflow: hidden; padding: 4rem 0; }
-.filmstrip-wrapper { position: relative; overflow: hidden; margin: 3rem -2rem; }
+.filmstrip-wrapper { position: relative; overflow: hidden; margin: 3rem -2rem 0; padding-bottom: 0; }
 .filmstrip { display: flex; gap: 0; animation: filmRoll 50s linear infinite; width: max-content; }
 .filmstrip.reverse { animation: filmRollReverse 45s linear infinite; }
 .filmstrip:hover { animation-play-state: paused; }
 @keyframes filmRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes filmRollReverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 .film-frame { width: 160px; flex-shrink: 0; background: #000; border-left: 2px solid #1a1a1a; position: relative; cursor: pointer; }
+.film-frame-special { width: 220px; border-left: 2px solid #C9A84C; border-right: 2px solid #C9A84C; }
 .film-sprockets { height: 16px; background: #0a0a0a; display: flex; align-items: center; justify-content: space-around; padding: 0 6px; }
 .film-sprocket { width: 9px; height: 7px; background: #222; border-radius: 2px; border: 1px solid #333; }
 .film-photo-placeholder {
-  width: 100%; height: 240px;
+  width: 100%; aspect-ratio: 9/16;
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
 }
 .film-photo-placeholder .ph-icon { font-size: 2rem; opacity: 0.2; }
 .film-photo-placeholder .ph-name { font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); opacity: 0.6; text-align: center; padding: 0 0.5rem; }
-.film-img-wrap { width: 100%; height: 240px; overflow: hidden; position: relative; }
+.film-img-wrap { width: 100%; aspect-ratio: 9/16; overflow: hidden; position: relative; }
 .film-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(100%) contrast(1.1); transition: filter 0.4s ease; }
 .film-img-wrap img.colorida { filter: grayscale(0%) contrast(1.05); }
-.film-caption { height: 26px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
+.film-caption { height: 28px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: #C9A84C; }
 .estrela-title { text-align: center; margin-bottom: 1rem; }
 .estrela-name { font-family: var(--font-title); font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: var(--gold); display: block; line-height: 1; text-shadow: 0 0 60px rgba(201,168,76,0.3); }
 .estrela-sub { font-family: var(--font-accent); font-size: clamp(1rem, 2.5vw, 1.5rem); font-style: italic; color: var(--white-dim); letter-spacing: 0.1em; }
@@ -502,7 +506,61 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <div class="countdown-number" id="c2">2</div>
   <div class="countdown-number" id="c1">1</div>
   <div class="intro-title" id="introTitle">O Filme da Minha Vida</div>
-  <div class="intro-name"  id="introName">Dalylah</div>
+  <div class="intro-name-wrap" id="introNameWrap" style="opacity:0;position:absolute;text-align:center;">
+    <div class="intro-name" id="introName" style="opacity:1;position:relative;">Dalylah Rezende</div>
+    <div class="intro-anos" id="introAnos" style="opacity:0;font-family:var(--font-title);font-size:clamp(1.5rem,5vw,3.5rem);color:var(--gold);font-style:italic;letter-spacing:0.1em;margin-top:0.3rem;">40 anos</div>
+  </div>
+  <!-- Paparazzi stage -->
+  <div id="paparazziStage" style="display:none;position:absolute;inset:0;overflow:hidden;">
+    <!-- Silhueta camera profissional a direita -->
+    <div id="papShadows" style="position:absolute;right:3%;top:0;bottom:0;width:45%;display:flex;align-items:center;justify-content:center;opacity:0;">
+      <svg viewBox="0 0 320 260" width="320" height="260" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 30px rgba(201,168,76,0.15))">
+        <!-- Corpo principal da camera DSLR -->
+        <rect x="40" y="80" width="240" height="160" rx="18" fill="rgba(15,12,5,0.92)"/>
+        <!-- Topo pentaprisma -->
+        <path d="M100 80 L120 40 L200 40 L220 80 Z" fill="rgba(10,8,3,0.95)"/>
+        <!-- Grip direito -->
+        <rect x="260" y="95" width="35" height="100" rx="14" fill="rgba(12,10,4,0.9)"/>
+        <!-- Lente -- anel externo -->
+        <circle cx="160" cy="165" r="72" fill="rgba(8,6,2,0.97)"/>
+        <!-- Lente -- anel medio -->
+        <circle cx="160" cy="165" r="56" fill="rgba(5,4,2,0.98)"/>
+        <!-- Lente -- vidro reflexo -->
+        <circle cx="160" cy="165" r="42" fill="rgba(3,3,8,0.99)"/>
+        <circle cx="160" cy="165" r="30" fill="rgba(2,2,6,1)"/>
+        <!-- Reflexo sutil na lente -->
+        <ellipse cx="148" cy="150" rx="10" ry="7" fill="rgba(201,168,76,0.06)" transform="rotate(-20,148,150)"/>
+        <!-- Flash externo montado -->
+        <rect x="118" y="10" width="84" height="32" rx="6" fill="rgba(12,10,4,0.9)"/>
+        <rect x="130" y="4" width="60" height="8" rx="3" fill="rgba(20,16,6,0.85)"/>
+        <!-- Botao disparador -->
+        <circle cx="252" cy="93" r="8" fill="rgba(30,24,8,0.9)"/>
+        <circle cx="252" cy="93" r="5" fill="rgba(201,168,76,0.15)"/>
+        <!-- Botoes laterais -->
+        <rect x="42" y="110" width="10" height="18" rx="4" fill="rgba(25,20,7,0.8)"/>
+        <rect x="42" y="135" width="10" height="18" rx="4" fill="rgba(25,20,7,0.8)"/>
+        <!-- Visor -->
+        <rect x="130" y="46" width="60" height="30" rx="5" fill="rgba(8,6,2,0.95)"/>
+        <rect x="136" y="50" width="48" height="22" rx="3" fill="rgba(3,3,8,0.98)"/>
+        <!-- Anel lente detalhes -->
+        <circle cx="160" cy="165" r="65" fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="2"/>
+        <circle cx="160" cy="165" r="50" fill="none" stroke="rgba(201,168,76,0.06)" stroke-width="1.5"/>
+        <!-- Telezoom lens barrel -->
+        <rect x="88" y="93" width="144" height="22" rx="4" fill="rgba(18,14,5,0.7)" opacity="0.5"/>
+      </svg>
+    </div>
+    <!-- Flash de camera -->
+    <div id="camFlash" style="position:absolute;inset:0;background:white;opacity:0;pointer-events:none;"></div>
+    <!-- Fotos centralizadas e maiores -->
+    <div id="papPhotos" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:55%;max-width:380px;">
+      <img id="papImg1" src="imagens/Dalylah_solo/intro1.jpg" style="position:absolute;top:0;left:0;width:100%;border:4px solid white;box-shadow:0 12px 60px rgba(0,0,0,0.9);opacity:0;transform:rotate(-4deg) scale(0.95);transition:opacity 0.15s,transform 0.25s;filter:grayscale(10%)">
+      <img id="papImg2" src="imagens/Dalylah_solo/intro2.jpg" style="position:absolute;top:0;left:0;width:100%;border:4px solid white;box-shadow:0 12px 60px rgba(0,0,0,0.9);opacity:0;transform:rotate(3deg) scale(0.97);transition:opacity 0.15s,transform 0.25s;filter:grayscale(10%)">
+      <img id="papImg3" src="imagens/Dalylah_solo/intro3.jpg" style="position:absolute;top:0;left:0;width:100%;border:4px solid white;box-shadow:0 12px 60px rgba(0,0,0,0.9);opacity:0;transform:rotate(-2deg) scale(0.99);transition:opacity 0.15s,transform 0.25s;filter:grayscale(10%)">
+      <img id="papImg4" src="imagens/Dalylah_solo/intro4.jpg" style="position:absolute;top:0;left:0;width:100%;border:4px solid white;box-shadow:0 12px 60px rgba(0,0,0,0.9);opacity:0;transform:rotate(2deg) scale(1);transition:opacity 0.15s,transform 0.25s;filter:grayscale(10%)">
+      <!-- placeholder de altura -->
+      <img src="imagens/Dalylah_solo/intro1.jpg" style="width:100%;visibility:hidden;">
+    </div>
+  </div>
 </div>
 
 <!-- TICKER -->
@@ -538,7 +596,6 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <ul class="nav-links">
     <li><a href="#detalhes">Detalhes</a></li>
     <li><a href="#rsvp">Confirmar</a></li>
-    <li><a href="#calcada">Cal&ccedil;ada da Fama</a></li>
   </ul>
 </nav>
 
@@ -595,15 +652,15 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
 </div>
 
 <!-- A ESTRELA / FILMSTRIP -->
-<section id="estrela">
-  <div class="section-inner">
-    <div class="estrela-title reveal">
-      <span class="estrela-name">Dalylah Rezende</span>
-      <span class="estrela-sub">Voc&ecirc; &eacute; parte do filme da minha vida!</span>
-    </div>
+<section id="estrela" style="padding:3rem 0 0;margin-bottom:0;">
+  <div style="text-align:center;padding:0 2rem 2rem;">
+    <span class="estrela-name">Voc&ecirc; &eacute; parte do filme da minha vida!</span>
   </div>
   <div class="filmstrip-wrapper">
     <div class="filmstrip" id="filmstrip"></div>
+  </div>
+  <div style="background:linear-gradient(90deg,transparent,rgba(201,168,76,0.08) 20%,rgba(201,168,76,0.12) 50%,rgba(201,168,76,0.08) 80%,transparent);border-top:1px solid rgba(201,168,76,0.2);border-bottom:1px solid rgba(201,168,76,0.2);padding:0.9rem 2rem;text-align:center;">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(0.75rem,2vw,1rem);font-style:italic;color:rgba(201,168,76,0.7);letter-spacing:0.25em;text-transform:uppercase;">16 de Maio de 2026 &nbsp;&bull;&nbsp; Reserva Newest &nbsp;&bull;&nbsp; Goi&acirc;nia</span>
   </div>
 </section>
 
@@ -628,7 +685,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
           <span class="clapper-val">16 de Maio de 2026<small>S&aacute;bado</small></span>
         </div>
         <div class="clapper-row">
-          <span class="clapper-key">Abertura de Portas</span>
+          <span class="clapper-key">Red Carpet</span>
           <span class="clapper-val">17h00<small>Pontualidade &eacute; glamour. Quem chega tarde perde o melhor da sess&atilde;o.</small></span>
         </div>
         <div class="clapper-row">
@@ -645,16 +702,13 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
         </div>
         <div class="clapper-row">
           <span class="clapper-key">Menu</span>
-          <span class="clapper-val">Pok&ecirc;s, Bowls e Salads<small>Champanhe, refrigerantes e sucos inclu&iacute;dos. Cervejas e demais bebidas alco&oacute;licas por conta da convidada.</small></span>
+          <span class="clapper-val">Pokes, Bowls e Salads<small>Champanhe, refrigerantes e sucos inclu&iacute;dos. Cervejas e demais bebidas alco&oacute;licas por conta da convidada.</small></span>
         </div>
         <div class="clapper-row">
-          <span class="clapper-key">Atividades</span>
-          <span class="clapper-val">Muito pop rock, Karaok&ecirc;, fotos, flashs e premia&ccedil;&atilde;o<small>Melhores fantasias ser&atilde;o premiadas</small></span>
+          <span class="clapper-key">Teremos</span>
+          <span class="clapper-val">Muito pop rock, Karaok&ecirc;, fotos, flashs e premia&ccedil;&atilde;o<small>Melhores fantasias em destaque ser&atilde;o premiadas</small></span>
         </div>
       </div>
-    </div>
-    <div class="reveal" style="margin-top:2rem;border-radius:8px;overflow:hidden;border:1px solid rgba(201,168,76,0.2);">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3821.7745431954777!2d-49.27244372396081!3d-16.688161845599403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ef1cdb578874d%3A0xec4d4a324a52529e!2sReserva%20Newest!5e0!3m2!1spt-BR!2sbr!4v1776018493741!5m2!1spt-BR!2sbr" width="100%" height="320" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div class="dress-code-note reveal">
       <p>
@@ -707,10 +761,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
             <option value="nao">Infelizmente n&atilde;o poderei comparecer</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="mensagemEstrela">Mensagem para sua estrela <small style="color:var(--white-dim);font-size:0.6rem;">(m&aacute;x. 200 caracteres, opcional)</small></label>
-          <input class="form-input" type="text" id="mensagemEstrela" maxlength="200" placeholder="Uma frase que te define...">
-        </div>
+
         <button type="submit" class="btn-gold">Confirmar Presen&ccedil;a</button>
       </form>
     </div>
@@ -718,7 +769,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
 </section>
 
 <!-- CALCADA DA FAMA -->
-<section id="calcada">
+<section id="calcada" style="display:none">
   <div class="section-inner">
     <span class="section-eyebrow reveal">Confirmadas</span>
     <h2 class="section-title reveal">Cal&ccedil;ada da Fama</h2>
@@ -769,25 +820,14 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
     <div>
       <span class="gold">Dire&ccedil;&atilde;o Geral</span><br>
       Dalylah Rezende<br><br>
-      <span class="gold">Elenco Principal</span><br>
-      Alenira Maciel &nbsp;&bull;&nbsp; Joana Gai&atilde;o &nbsp;&bull;&nbsp; Vivian Duarte<br>
-      Amanda Santana &nbsp;&bull;&nbsp; Rebeca Vital &nbsp;&bull;&nbsp; Deborah Em&iacute;lia<br>
-      N&uacute;bia Souza &nbsp;&bull;&nbsp; Laura Freitas &nbsp;&bull;&nbsp; B&aacute;rbara (Babi)<br>
-      Dany &nbsp;&bull;&nbsp; Sinderley &nbsp;&bull;&nbsp; Sheila &nbsp;&bull;&nbsp; Cleides<br>
-      Ivanei &nbsp;&bull;&nbsp; Jana&iacute;na Mendanha &nbsp;&bull;&nbsp; Jaciane<br>
-      Patr&iacute;cia &nbsp;&bull;&nbsp; Hilma &nbsp;&bull;&nbsp; Nilce &nbsp;&bull;&nbsp; Gissely Soares<br>
-      Giselle Abreu &nbsp;&bull;&nbsp; Sandra &nbsp;&bull;&nbsp; Renata Falco<br>
-      Luana Bonfim &nbsp;&bull;&nbsp; Rayssa Guth &nbsp;&bull;&nbsp; Giovana<br>
-      Ghilzi Ferreira &nbsp;&bull;&nbsp; Rafaela Gomes &nbsp;&bull;&nbsp; Carita Braga<br>
-      Silvia &nbsp;&bull;&nbsp; Lorena &nbsp;&bull;&nbsp; Vivian<br><br>
-      <span class="gold">Loca&ccedil;&atilde;o</span><br>
-      Reserva Newest &mdash; Goi&acirc;nia, GO<br><br>
       <span class="gold">Trilha Sonora</span><br>
       Pop &amp; Pop Rock Internacional<br><br>
-      <span class="red">Produ&ccedil;&atilde;o: 1986</span><br>
-      <span class="gold">Lan&ccedil;amento: 2026</span><br><br>
-      Todos os direitos reservados a Dalylah Rezende<br>
-      16 de Maio de 2026
+      <span class="gold">Loca&ccedil;&atilde;o</span><br>
+      Reserva Newest &mdash; Goi&acirc;nia, GO<br>
+      <div style="margin-top:1rem;border-radius:6px;overflow:hidden;border:1px solid rgba(201,168,76,0.2);max-width:50%;min-width:280px;margin-left:auto;margin-right:auto;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3821.7745431954777!2d-49.27244372396081!3d-16.688161845599403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ef1cdb578874d%3A0xec4d4a324a52529e!2sReserva%20Newest!5e0!3m2!1spt-BR!2sbr!4v1776018493741!5m2!1spt-BR!2sbr" width="100%" height="200" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div><br>
+      Todos os direitos reservados a Dalylah Rezende
     </div>
   </div>
   <p class="footer-love">Com amor, Dalylah</p>
@@ -931,22 +971,72 @@ bgAudio.addEventListener('play',  function() { playPauseBtn.innerHTML = '&#9646;
     });
   }
 
+  function flash(intensity) {
+    return new Promise(function(resolve) {
+      var f = document.getElementById('camFlash');
+      f.style.transition = 'none';
+      f.style.opacity = intensity;
+      setTimeout(function() {
+        f.style.transition = 'opacity 0.3s';
+        f.style.opacity = '0';
+        setTimeout(resolve, 320);
+      }, 60);
+    });
+  }
+
   async function runIntro() {
+    var wait = function(ms) { return new Promise(function(r) { setTimeout(r, ms); }); };
+
+    // FASE 1: 3, 2, 1
     await anim(document.getElementById('c3'), {opacity:'1', transition:'opacity 0.1s'}, 100);
-    await new Promise(function(r) { setTimeout(r, 600); });
+    await wait(600);
     await anim(document.getElementById('c3'), {opacity:'0', transition:'opacity 0.3s'}, 300);
     await anim(document.getElementById('c2'), {opacity:'1', transition:'opacity 0.1s'}, 100);
-    await new Promise(function(r) { setTimeout(r, 600); });
+    await wait(600);
     await anim(document.getElementById('c2'), {opacity:'0', transition:'opacity 0.3s'}, 300);
     await anim(document.getElementById('c1'), {opacity:'1', transition:'opacity 0.1s'}, 100);
-    await new Promise(function(r) { setTimeout(r, 600); });
+    await wait(600);
     await anim(document.getElementById('c1'), {opacity:'0', transition:'opacity 0.3s'}, 300);
+
+    // FASE 2: Titulo + Nome + 40 anos
     await anim(document.getElementById('introTitle'), {opacity:'1', transition:'opacity 0.8s'}, 800);
-    await new Promise(function(r) { setTimeout(r, 1000); });
+    await wait(800);
     await anim(document.getElementById('introTitle'), {opacity:'0', transition:'opacity 0.5s'}, 500);
-    await anim(document.getElementById('introName'), {opacity:'1', transition:'opacity 0.8s'}, 800);
-    await new Promise(function(r) { setTimeout(r, 1000); });
-    await anim(document.getElementById('introName'), {opacity:'0', transition:'opacity 0.5s'}, 500);
+    // Nome grande entra
+    var wrap = document.getElementById('introNameWrap');
+    Object.assign(wrap.style, {opacity:'1', transition:'opacity 0.8s'});
+    await wait(900);
+    // 40 anos entra embaixo
+    var anos = document.getElementById('introAnos');
+    Object.assign(anos.style, {opacity:'1', transition:'opacity 0.6s'});
+    await wait(1200);
+    // Fade out nome+anos
+    Object.assign(wrap.style, {opacity:'0', transition:'opacity 0.5s'});
+    await wait(600);
+
+    // FASE 3: Paparazzi stage
+    var stage = document.getElementById('paparazziStage');
+    stage.style.display = 'block';
+    // Animar silhuetas entrando da direita
+    var shadows = document.getElementById('papShadows');
+    Object.assign(shadows.style, {transform:'translateX(60px)', opacity:'0', transition:'none'});
+    await wait(50);
+    Object.assign(shadows.style, {transform:'translateX(0)', opacity:'1', transition:'transform 0.6s ease, opacity 0.6s'});
+    await wait(700);
+
+    // Fotos aparecem com flash, uma por cima da outra
+    var imgs = ['papImg1','papImg2','papImg3','papImg4'];
+    for (var i = 0; i < imgs.length; i++) {
+      var img = document.getElementById(imgs[i]);
+      await flash(0.85);
+      Object.assign(img.style, {opacity:'1', transform: img.style.transform.replace('scale(0.95)','scale(1)').replace('scale(0.97)','scale(1)').replace('scale(0.99)','scale(1)')});
+      await wait(500);
+    }
+    await wait(800);
+
+    // Fade out tudo
+    Object.assign(stage.style, {opacity:'0', transition:'opacity 0.8s'});
+    await wait(900);
     intro.classList.add('hidden');
   }
 
@@ -1121,28 +1211,38 @@ setInterval(updateCountdown, 1000);
 
 // ===== GALERIA / FILMSTRIP =====
 var galleryPhotos = [
-  { label: 'Dalylah',             folder: 'Dalylah_solo' },
-  { label: '\u00c1gata',         folder: 'Agata' },
-  { label: 'Alenira',            folder: 'Alenira' },
-  { label: 'Joana',              folder: 'Joana' },
-  { label: 'Ana Cristina',       folder: 'Ana_Cristina' },
-  { label: 'Amanda Furtado',     folder: 'Amanda Furtado' },
-  { label: 'Carita',             folder: 'Carita' },
-  { label: 'Cleide',             folder: 'Cleide' },
-  { label: 'Dani & B\u00e1rbara', folder: 'Dani_e_Barbara' },
-  { label: 'Deborah',            folder: 'Deborah' },
-  { label: 'Ghilzi',             folder: 'Ghilzi' },
-  { label: 'Giovana',            folder: 'Giovana' },
-  { label: 'Gissely',            folder: 'Gissely' },
-  { label: 'Jana\u00edna',       folder: 'Janaina' },
-  { label: 'Karen',              folder: 'Karen' },
-  { label: 'Lorena & L\u00edvia', folder: 'Lorena_e_Livia' },
-  { label: 'Mirelly',            folder: 'Mirelly' },
-  { label: 'N\u00fabia',         folder: 'Nubia' },
-  { label: 'Rebeca',             folder: 'Rebeca' },
-  { label: 'Renata Falco',       folder: 'Renata_Falco' },
-  { label: 'Silvia',             folder: 'Silvia' },
-  { label: 'V\u00e1rias Amigas', folder: 'Varias_amigas' },
+  { label: '\u00c1gata',			folder: 'Agata' },
+  { label: 'Alenira',			folder: 'Alenira' },
+  { label: 'Amanda Furtado',			folder: 'Amanda Furtado' },
+  { label: 'Amanda Santana',			folder: 'Amanda Santana' },
+  { label: 'Ana Cristina',			folder: 'Ana Cristina' },
+  { label: 'Carita',			folder: 'Carita' },
+  { label: 'Cleide',			folder: 'Cleide' },
+  { label: 'Deborah',			folder: 'Deborah' },
+  { label: 'Duda',			folder: 'Duda' },
+  { label: 'Filipe',			folder: 'Filipe' },
+  { label: 'Ghilzi',			folder: 'Ghilzi' },
+  { label: 'Giovana',			folder: 'Giovana' },
+  { label: 'Gissely',			folder: 'Gissely' },
+  { label: 'Jana\u00edna',			folder: 'Janaina' },
+  { label: 'Joana',			folder: 'Joana' },
+  { label: 'Joyce',			folder: 'Joyce' },
+  { label: 'Karen',			folder: 'Karen' },
+  { label: 'Let\u00edcia',			folder: 'Leticia' },
+  { label: 'L\u00edvia',			folder: 'Livia' },
+  { label: 'Lorena',			folder: 'Lorena' },
+  { label: 'Lucas',			folder: 'Lucas' },
+  { label: 'Mariah',			folder: 'Mariah' },
+  { label: 'Mateus',			folder: 'Mateus' },
+  { label: 'Mirelly',			folder: 'Mirelly' },
+  { label: 'N\u00fabia',			folder: 'Nubia' },
+  { label: 'Rebeca',			folder: 'Rebeca' },
+  { label: 'Renata Falco',			folder: 'Renata_Falco' },
+  { label: 'Sheila',			folder: 'Sheila' },
+  { label: 'Silvia',			folder: 'Silvia' },
+  { label: 'Sinderley',			folder: 'Sinderley' },
+  { label: 'Susana',			folder: 'Susana' },
+  { label: 'Vivian',			folder: 'Vivian' },
 ];
 
 // ===== FILMSTRIP (amigas com Dalylah intercalada) =====
@@ -1173,18 +1273,31 @@ function makeFilmFrame(src, label, stripEl) {
 
 function buildFilmstrip() {
   var strip = document.getElementById('filmstrip');
-  var soloSrc = 'images/Dalylah_solo/capa.jpg';
-  // Intercalar: solo da Dalylah entre cada amiga (exclui Dalylah_solo do array de amigas)
-  var amigas = galleryPhotos.filter(function(p) { return p.folder !== 'Dalylah_solo'; });
-  var expanded = [];
-  amigas.forEach(function(p) {
-    expanded.push({ label: 'Dalylah', folder: 'Dalylah_solo', src: soloSrc });
-    expanded.push(p);
-  });
+  // Frame especial de abertura -- Dalylah como credito
+  var specialFrame = document.createElement('div');
+  specialFrame.className = 'film-frame film-frame-special';
+  var sp1d = document.createElement('div'); sp1d.className = 'film-sprockets';
+  for (var k=0;k<5;k++){var s=document.createElement('div');s.className='film-sprocket';sp1d.appendChild(s);}
+  var sp2d = document.createElement('div'); sp2d.className = 'film-sprockets';
+  for (var k=0;k<5;k++){var s=document.createElement('div');s.className='film-sprocket';sp2d.appendChild(s);}
+  var wrapD = document.createElement('div'); wrapD.className = 'film-img-wrap';
+  wrapD.style.border = '2px solid #C9A84C';
+  var imgD = document.createElement('img');
+  imgD.src = 'imagens/Dalylah_solo/capa.jpg';
+  imgD.alt = 'Dalylah';
+  imgD.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(100%) contrast(1.1);display:block;';
+  wrapD.appendChild(imgD);
+  var capD = document.createElement('div'); capD.className = 'film-caption';
+  capD.style.color = '#C9A84C'; capD.textContent = 'Dalylah Rezende';
+  specialFrame.appendChild(sp1d);
+  specialFrame.appendChild(wrapD);
+  specialFrame.appendChild(sp2d);
+  specialFrame.appendChild(capD);
+  strip.appendChild(specialFrame);
   // Duplicar para loop infinito
-  var all = expanded.concat(expanded);
+  var all = galleryPhotos.concat(galleryPhotos);
   all.forEach(function(p) {
-    var src = p.src || ('images/' + p.folder + '/capa.jpg');
+    var src = p.src || ('imagens/' + p.folder + '/capa.jpg');
     makeFilmFrame(src, p.label, strip);
   });
 }
@@ -1195,8 +1308,10 @@ function buildFilmstrip2() {
   var strip = document.getElementById('filmstrip2');
   if (!strip) return;
   var fotos = [];
-  for (var i = 1; i <= 30; i++) {
-    fotos.push({ src: 'images/Varias_amigas/' + i + '.jpg', label: 'Nossas Hist\u00f3rias' });
+  var palavrasAmizade = ['Amor','Cumplicidade','Divers\u00e3o','Lealdade','Afeto','Alegria','Confian\u00e7a','Carinho','Parceria','Gratid\u00e3o','Hist\u00f3rias','Mem\u00f3rias','Ri\u00e7os','Abra\u00e7os','Encontros','Sorrisos','Cumplicidade','Cuidado','Presen\u00e7a','For\u00e7a','Inspira\u00e7\u00e3o','Luz','Vida','Magia','Emo\u00e7\u00e3o','Calorosa','Irmandade','Lazer','Estilo','Glamour','Cinema','Noite','Brilho','Estrelas','Tapete Vermelho','Champanh\u00e9','Celebra\u00e7\u00e3o','Festa','Divas','Incr\u00edveis','Eternas','Inesquec\u00edvel','Especial','Bonitas','Poderosas','Livres','Felizes','Juntas','Sempre','Nossas','Hist\u00f3rias','Forever'];
+  for (var i = 1; i <= 52; i++) {
+    var fname = encodeURI('imagens/Varias_amigas/amigas (' + i + ').jpg');
+    fotos.push({ src: fname, label: palavrasAmizade[i-1] || 'Amizade' });
   }
   var all = fotos.concat(fotos);
   all.forEach(function(p) { makeFilmFrame(p.src, p.label, strip); });
@@ -1216,7 +1331,7 @@ document.addEventListener('click', function() {
 function buildGallery() {
   var grid = document.getElementById('galleryGrid');
   galleryPhotos.forEach(function(p) {
-    var src = 'images/' + p.folder + '/capa.jpg';
+    var src = 'imagens/' + p.folder + '/capa.jpg';
     var item = document.createElement('div');
     item.className = 'gallery-item';
     item.setAttribute('data-src', src);
@@ -1265,7 +1380,7 @@ function openCinema(folder, label) {
   var loaded = 0;
   var results = new Array(candidates.length).fill(null);
   candidates.forEach(function(fname, i) {
-    var src = 'images/' + folder + '/' + fname;
+    var src = 'imagens/' + folder + '/' + fname;
     var tst = new Image();
     tst.onload = function() {
       results[i] = src;
@@ -1369,9 +1484,9 @@ buildFame();
 var presents = [
   { id:'001', name:'Bolo de Anivers\u00e1rio \u2014 40 anos', desc:'Bolo de chocolate com recheio de brigadeiro, preto e branco, para 35 pessoas.', file:null, marketplace:null },
   { id:'002', name:'300 Doces M\u00e9dios', desc:'Brigadeiros preto e branco ou bombons.', file:null, marketplace:null },
-  { id:'003', name:'Fluido Prolongador Liso Valorize 180ml', desc:'Fluido Prolongador do Efeito Liso Valorize.', file:'images/003.jpg', marketplace:'https://www.amazon.com.br/dp/B07F1YT7WZ' },
-  { id:'004', name:'Headset USB Logitech H390 Preto', desc:'Headset com fio USB Logitech H390 Preto.', file:'images/004.jpg', marketplace:'https://www.mercadolivre.com.br/headset-com-fio-usb-logitech-h390-preto/p/MLB6417063' },
-  { id:'005', name:'Hidratante Ameixa Negra O Botic\u00e1rio', desc:'Lo\u00e7\u00e3o Hidratante Desodorante Corporal Nativa Spa Ameixa Negra 400ml.', file:'images/005.jpg', marketplace:'https://www.boticario.com.br/locao-hidratante-desodorante-corporal-nativa-spa-ameixa-negra-400ml-v2/' },
+  { id:'003', name:'Fluido Prolongador Liso Valorize 180ml', desc:'Fluido Prolongador do Efeito Liso Valorize.', file:'imagens/003.jpg', marketplace:'https://www.amazon.com.br/dp/B07F1YT7WZ' },
+  { id:'004', name:'Headset USB Logitech H390 Preto', desc:'Headset com fio USB Logitech H390 Preto.', file:'imagens/004.jpg', marketplace:'https://www.mercadolivre.com.br/headset-com-fio-usb-logitech-h390-preto/p/MLB6417063' },
+  { id:'005', name:'Hidratante Ameixa Negra O Botic\u00e1rio', desc:'Lo\u00e7\u00e3o Hidratante Desodorante Corporal Nativa Spa Ameixa Negra 400ml.', file:'imagens/005.jpg', marketplace:'https://www.boticario.com.br/locao-hidratante-desodorante-corporal-nativa-spa-ameixa-negra-400ml-v2/' },
 ];
 
 var selectedPresent = null;
@@ -1504,6 +1619,51 @@ var observer = new IntersectionObserver(function(entries) {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+// ===== TROCA DE MUSICA =====
+var currentTrack = 'wannabe';
+function switchTrack(track) {
+  if (currentTrack === track || !audioStarted) return;
+  currentTrack = track;
+  var wasPlaying = !bgAudio.paused;
+  var src = track === 'swim' ? 'SWIM.mp3' : 'wannabe.mp3';
+  bgAudio.pause();
+  bgAudio.src = src;
+  bgAudio.load();
+  if (wasPlaying) {
+    bgAudio.play().catch(function() {});
+  }
+  // Atualiza o player flutuante
+  var trackEl  = document.querySelector('.player-track');
+  var artistEl = document.querySelector('.player-artist');
+  if (trackEl && artistEl) {
+    if (track === 'swim') {
+      trackEl.textContent  = 'Swim';
+      artistEl.textContent = 'BTS';
+    } else {
+      trackEl.textContent  = 'Wannabe';
+      artistEl.textContent = 'Spice Girls';
+    }
+  }
+}
+
+var swimObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      // Entrou na tela -- troca para SWIM e mantem ate o final
+      switchTrack('swim');
+    } else {
+      // Saiu da tela -- so volta wannabe se o usuario voltou para cima
+      // (boundingClientRect.top > 0 significa que a secao esta abaixo da viewport)
+      if (e.boundingClientRect.top > 0) {
+        switchTrack('wannabe');
+      }
+    }
+  });
+}, { threshold: 0.3 });
+
+var filmstrip2sec = document.getElementById('filmstrip2-section');
+if (filmstrip2sec) swimObserver.observe(filmstrip2sec);
 </script>
 </body>
 </html>
