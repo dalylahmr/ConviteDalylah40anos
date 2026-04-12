@@ -250,7 +250,7 @@ section { padding: 6rem 2rem; }
 
 /* ===== FILMSTRIP ===== */
 #estrela { background: var(--black); overflow: hidden; padding-bottom: 0 !important; }
-#filmstrip2-section { background: var(--black-soft); overflow: hidden; padding: 4rem 0; }
+#filmstrip2-section { background: var(--black-soft); overflow: hidden; padding: 0; }
 .filmstrip-wrapper { position: relative; overflow: hidden; margin: 3rem -2rem 0; padding-bottom: 0; }
 .filmstrip { display: flex; gap: 0; animation: filmRoll 50s linear infinite; width: max-content; }
 .filmstrip.reverse { animation: filmRollReverse 45s linear infinite; }
@@ -258,7 +258,7 @@ section { padding: 6rem 2rem; }
 @keyframes filmRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes filmRollReverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 .film-frame { width: 160px; flex-shrink: 0; background: #000; border-left: 2px solid #1a1a1a; position: relative; cursor: pointer; }
-.film-frame-special { width: 220px; border-left: 2px solid #C9A84C; border-right: 2px solid #C9A84C; }
+.film-frame-special { width: 160px; border-left: 2px solid #C9A84C; border-right: 2px solid #C9A84C; }
 .film-sprockets { height: 16px; background: #0a0a0a; display: flex; align-items: center; justify-content: space-around; padding: 0 6px; }
 .film-sprocket { width: 9px; height: 7px; background: #222; border-radius: 2px; border: 1px solid #333; }
 .film-photo-placeholder {
@@ -659,9 +659,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
   <div class="filmstrip-wrapper">
     <div class="filmstrip" id="filmstrip"></div>
   </div>
-  <div style="background:linear-gradient(90deg,transparent,rgba(201,168,76,0.08) 20%,rgba(201,168,76,0.12) 50%,rgba(201,168,76,0.08) 80%,transparent);border-top:1px solid rgba(201,168,76,0.2);border-bottom:1px solid rgba(201,168,76,0.2);padding:0.9rem 2rem;text-align:center;">
-    <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(0.75rem,2vw,1rem);font-style:italic;color:rgba(201,168,76,0.7);letter-spacing:0.25em;text-transform:uppercase;">16 de Maio de 2026 &nbsp;&bull;&nbsp; Reserva Newest &nbsp;&bull;&nbsp; Goi&acirc;nia</span>
-  </div>
+
 </section>
 
 <!-- DETALHES -->
@@ -1269,36 +1267,25 @@ function makeFilmFrame(src, label, stripEl) {
   wrap.appendChild(img); wrap.appendChild(ph);
   frame.appendChild(sp1); frame.appendChild(wrap); frame.appendChild(sp2); frame.appendChild(caption);
   stripEl.appendChild(frame);
+  return frame;
 }
 
 function buildFilmstrip() {
   var strip = document.getElementById('filmstrip');
-  // Frame especial de abertura -- Dalylah como credito
-  var specialFrame = document.createElement('div');
-  specialFrame.className = 'film-frame film-frame-special';
-  var sp1d = document.createElement('div'); sp1d.className = 'film-sprockets';
-  for (var k=0;k<5;k++){var s=document.createElement('div');s.className='film-sprocket';sp1d.appendChild(s);}
-  var sp2d = document.createElement('div'); sp2d.className = 'film-sprockets';
-  for (var k=0;k<5;k++){var s=document.createElement('div');s.className='film-sprocket';sp2d.appendChild(s);}
-  var wrapD = document.createElement('div'); wrapD.className = 'film-img-wrap';
-  wrapD.style.border = '2px solid #C9A84C';
-  var imgD = document.createElement('img');
-  imgD.src = 'imagens/Dalylah_solo/capa.jpg';
-  imgD.alt = 'Dalylah';
-  imgD.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(100%) contrast(1.1);display:block;';
-  wrapD.appendChild(imgD);
-  var capD = document.createElement('div'); capD.className = 'film-caption';
-  capD.style.color = '#C9A84C'; capD.textContent = 'Dalylah Rezende';
-  specialFrame.appendChild(sp1d);
-  specialFrame.appendChild(wrapD);
-  specialFrame.appendChild(sp2d);
-  specialFrame.appendChild(capD);
-  strip.appendChild(specialFrame);
+  // Incluir Dalylah como primeiro frame normal para nao quebrar o loop
+  var allPhotos = [{ label: 'Dalylah Rezende', folder: 'Dalylah_solo', src: 'imagens/Dalylah_solo/intro0.jpg' }].concat(galleryPhotos);
   // Duplicar para loop infinito
-  var all = galleryPhotos.concat(galleryPhotos);
-  all.forEach(function(p) {
+  var all = allPhotos.concat(allPhotos);
+  all.forEach(function(p, idx) {
     var src = p.src || ('imagens/' + p.folder + '/capa.jpg');
-    makeFilmFrame(src, p.label, strip);
+    var frame = makeFilmFrame(src, p.label, strip);
+    // Destaque dourado apenas no primeiro frame (Dalylah)
+    if (idx === 0 || idx === allPhotos.length) {
+      var wrap = frame ? frame.querySelector('.film-img-wrap') : null;
+      var cap  = frame ? frame.querySelector('.film-caption') : null;
+      if (wrap) wrap.style.border = '2px solid #C9A84C';
+      if (cap)  cap.style.color   = '#C9A84C';
+    }
   });
 }
 buildFilmstrip();
@@ -1310,6 +1297,7 @@ function buildFilmstrip2() {
   var fotos = [];
   var palavrasAmizade = ['Amor','Cumplicidade','Divers\u00e3o','Lealdade','Afeto','Alegria','Confian\u00e7a','Carinho','Parceria','Gratid\u00e3o','Hist\u00f3rias','Mem\u00f3rias','Ri\u00e7os','Abra\u00e7os','Encontros','Sorrisos','Cumplicidade','Cuidado','Presen\u00e7a','For\u00e7a','Inspira\u00e7\u00e3o','Luz','Vida','Magia','Emo\u00e7\u00e3o','Calorosa','Irmandade','Lazer','Estilo','Glamour','Cinema','Noite','Brilho','Estrelas','Tapete Vermelho','Champanh\u00e9','Celebra\u00e7\u00e3o','Festa','Divas','Incr\u00edveis','Eternas','Inesquec\u00edvel','Especial','Bonitas','Poderosas','Livres','Felizes','Juntas','Sempre','Nossas','Hist\u00f3rias','Forever'];
   for (var i = 1; i <= 52; i++) {
+    if (i === 3) continue;
     var fname = encodeURI('imagens/Varias_amigas/amigas (' + i + ').jpg');
     fotos.push({ src: fname, label: palavrasAmizade[i-1] || 'Amizade' });
   }
