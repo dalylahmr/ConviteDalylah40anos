@@ -1297,7 +1297,7 @@ function buildFilmstrip2() {
   var fotos = [];
   var palavrasAmizade = ['Amor','Cumplicidade','Divers\u00e3o','Lealdade','Afeto','Alegria','Confian\u00e7a','Carinho','Parceria','Gratid\u00e3o','Hist\u00f3rias','Mem\u00f3rias','Ri\u00e7os','Abra\u00e7os','Encontros','Sorrisos','Cumplicidade','Cuidado','Presen\u00e7a','For\u00e7a','Inspira\u00e7\u00e3o','Luz','Vida','Magia','Emo\u00e7\u00e3o','Calorosa','Irmandade','Lazer','Estilo','Glamour','Cinema','Noite','Brilho','Estrelas','Tapete Vermelho','Champanh\u00e9','Celebra\u00e7\u00e3o','Festa','Divas','Incr\u00edveis','Eternas','Inesquec\u00edvel','Especial','Bonitas','Poderosas','Livres','Felizes','Juntas','Sempre','Nossas','Hist\u00f3rias','Forever'];
   for (var i = 1; i <= 52; i++) {
-    if (i === 3) continue;
+    if (i === 3 || i === 38) continue;
     var fname = encodeURI('imagens/Varias_amigas/amigas (' + i + ').jpg');
     fotos.push({ src: fname, label: palavrasAmizade[i-1] || 'Amizade' });
   }
