@@ -725,7 +725,7 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
     <div class="gold-line reveal"></div>
   </div>
   <div class="filmstrip-wrapper">
-  <div class="filmstrip" id="filmstrip2"></div>
+    <div class="filmstrip" id="filmstrip2"></div>
   </div>
 </section>
 
@@ -742,26 +742,15 @@ footer { background: #000; border-top: 1px solid rgba(201,168,76,0.15); padding:
         <p>Uma noite inesquec&iacute;vel. Vista-se para brilhar e venha fazer parte deste cap&iacute;tulo especial.<br>Escolha seu personagem, confirme sua presen&ccedil;a e prepare-se para o tapete vermelho.</p>
         <span class="rsvp-deadline">Prazo: 30 de Abril de 2026</span>
       </div>
-      <form class="rsvp-form reveal" id="rsvpForm" onsubmit="return false;">
-        <div class="form-group">
-          <label class="form-label" for="nome">Seu Nome Completo</label>
-          <input class="form-input" type="text" id="nome" name="nome" required placeholder="Como consta no convite">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="personagem">Personagem / Filme ou S&eacute;rie</label>
-          <input class="form-input" type="text" id="personagem" name="personagem" placeholder="Ex: Hermione Granger &mdash; Harry Potter">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="confirmacao">Confirma&ccedil;&atilde;o</label>
-          <select class="form-select" id="confirmacao" name="confirmacao" required>
-            <option value="">Selecione</option>
-            <option value="sim">Sim, estarei l&aacute;</option>
-            <option value="nao">Infelizmente n&atilde;o poderei comparecer</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn-gold">Confirmar Presen&ccedil;a</button>
-      </form>
+      <div class="rsvp-form reveal" style="display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,0.5);line-height:1.7;">
+          Clique no bot&atilde;o abaixo para confirmar sua presen&ccedil;a e escolher sua fantasia.
+        </p>
+        <a href="https://docs.google.com/forms/d/1oDppL16G9nWkaNBcTuBkNS9FDC3Mpham9BMzHpq5x1E/viewform" target="_blank" rel="noopener" class="btn-gold" style="text-decoration:none;text-align:center;padding:1rem 2rem;display:inline-block;">
+          &#9733; Confirmar Presen&ccedil;a
+        </a>
+        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.4);">Prazo: 30 de Abril de 2026</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1564,41 +1553,6 @@ function submitCritica() {
   document.getElementById('criticaNome').value = '';
   document.getElementById('criticaTexto').value = '';
 }
-
-// ===== RSVP =====
-document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  var nome = document.getElementById('nome').value.trim();
-  var conf = document.getElementById('confirmacao').value;
-  var btn = this.querySelector('button[type="submit"]');
-  if (!nome || !conf) return;
-  if (conf === 'sim') {
-    var existe = confirmedGuests.some(function(g) {
-      return (typeof g === 'string' ? g : g.name) === nome;
-    });
-    if (!existe) {
-      var msgEl = document.getElementById('mensagemEstrela');
-      var msgVal = msgEl ? msgEl.value.trim().substring(0, 200) : '';
-      confirmedGuests.push({ name: nome, msg: msgVal });
-      saveFame(confirmedGuests);
-      buildFame();
-    }
-    btn.textContent = '\u2605 Presen\u00e7a confirmada!';
-    btn.style.background = 'var(--gold)';
-    btn.style.color = 'var(--black)';
-  } else {
-    btn.textContent = 'Que pena. Te esperamos da pr\u00f3xima vez!';
-    btn.style.background = '#333';
-  }
-  btn.disabled = true;
-  this.reset();
-  setTimeout(function() {
-    btn.textContent = 'Confirmar Presen\u00e7a';
-    btn.style.background = '';
-    btn.style.color = '';
-    btn.disabled = false;
-  }, 4000);
-});
 
 // ===== SCROLL REVEAL =====
 var observer = new IntersectionObserver(function(entries) {
