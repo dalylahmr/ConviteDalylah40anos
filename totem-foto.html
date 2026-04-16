@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Totem Fotográfico — Dalylah 40 Anos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Montserrat:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5E6B8;
+  --black: #080808;
+  --black-soft: #111111;
+  --red: #8B1A1A;
+  --white: #FAF6EE;
+  --white-dim: #C8C0B0;
+  --font-title: 'Playfair Display', Georgia, serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-accent: 'Cormorant Garamond', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/* ===== FLASH ===== */
+#flash {
+  position: fixed; inset: 0;
+  background: white;
+  opacity: 0; pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.05s;
+}
+#flash.active { opacity: 1; }
+
+/* ===== TELA INICIAL ===== */
+#screenIdle {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2rem; padding: 2rem;
+  background: var(--black);
+  z-index: 100;
+  transition: opacity 0.6s;
+}
+#screenIdle.hidden { opacity: 0; pointer-events: none; }
+
+.idle-border {
+  position: absolute; inset: 20px;
+  border: 1px solid rgba(201,168,76,0.25);
+  pointer-events: none;
+}
+.idle-corner {
+  position: absolute; width: 30px; height: 30px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.idle-corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+.idle-corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+.idle-corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+.idle-corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+.idle-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.8;
+}
+.idle-title {
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 900; color: white; line-height: 1;
+  text-align: center;
+}
+.idle-title em { color: var(--gold); font-style: italic; display: block; }
+.idle-subtitle {
+  font-family: var(--font-accent);
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-style: italic; color: var(--white-dim);
+  letter-spacing: 0.1em; text-align: center;
+}
+.idle-divider {
+  width: 80px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.idle-instruction {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--white-dim); letter-spacing: 0.15em;
+  text-transform: uppercase; text-align: center;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.idle-btn {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--gold); color: var(--gold);
+  padding: 1.2rem 3rem;
+  font-family: var(--font-body); font-size: 0.8rem;
+  font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.idle-btn:hover, .idle-btn:active {
+  background: var(--gold); color: var(--black); transform: scale(1.03);
+}
+
+/* ===== CÂMERA ===== */
+#screenCamera {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
+  background: var(--black);
+  z-index: 50;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s;
+}
+#screenCamera.active { opacity: 1; pointer-events: all; }
+
+.camera-header {
+  width: 100%; padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  flex-shrink: 0;
+}
+.camera-logo {
+  font-family: var(--font-title);
+  font-size: 1rem; font-style: italic; color: var(--gold);
+}
+.camera-counter {
+  font-size: 0.7rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--white-dim);
+}
+
+.camera-viewport {
+  position: relative;
+  flex: 1; width: 100%;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+#video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* espelho */
+}
+
+/* Frame overlay */
+.camera-frame {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.frame-corner {
+  position: absolute; width: 50px; height: 50px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.7;
+}
+.frame-corner.tl { top: 20px; left: 20px; border-width: 3px 0 0 3px; }
+.frame-corner.tr { top: 20px; right: 20px; border-width: 3px 3px 0 0; }
+.frame-corner.bl { bottom: 20px; left: 20px; border-width: 0 0 3px 3px; }
+.frame-corner.br { bottom: 20px; right: 20px; border-width: 0 3px 3px 0; }
+
+/* Countdown overlay */
+#countdown {
+  position: absolute;
+  font-family: var(--font-title);
+  font-size: 20vw; font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 60px rgba(201,168,76,0.8);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: scale(0.8);
+}
+#countdown.show {
+  opacity: 1; transform: scale(1);
+}
+
+.camera-footer {
+  width: 100%; padding: 1.5rem;
+  display: flex; align-items: center; justify-content: space-around;
+  border-top: 1px solid rgba(201,168,76,0.2);
+  flex-shrink: 0;
+}
+
+.btn-capture {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  background: transparent;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  position: relative;
+}
+.btn-capture::after {
+  content: '';
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--gold);
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-capture:hover::after { background: var(--gold-light); }
+.btn-capture:active { transform: scale(0.92); }
+.btn-capture:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.4); color: var(--white-dim);
+  padding: 0.7rem 1.5rem;
+  font-family: var(--font-body); font-size: 0.65rem;
+  font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ===== PREVIEW / RESULTADO ===== */
+#screenResult {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--black);
+  z-index: 80;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s;
+  padding: 1rem;
+  gap: 1.5rem;
+}
+#screenResult.active { opacity: 1; pointer-events: all; }
+
+.result-frame {
+  position: relative;
+  max-width: min(90vw, 500px);
+  max-height: 55vh;
+  border: 1px solid rgba(201,168,76,0.3);
+  box-shadow: 0 0 60px rgba(201,168,76,0.15);
+}
+.result-frame img {
+  display: block; width: 100%; height: 100%;
+  object-fit: contain;
+}
+
+/* Frame decorativo na foto */
+.result-frame::before {
+  content: '';
+  position: absolute; inset: 10px;
+  border: 1px solid rgba(201,168,76,0.35);
+  pointer-events: none; z-index: 1;
+}
+.result-corners .rc {
+  position: absolute; width: 22px; height: 22px;
+  border-color: var(--gold); border-style: solid; z-index: 2;
+  opacity: 0.9;
+}
+.result-corners .rc.tl { top: 5px; left: 5px; border-width: 2px 0 0 2px; }
+.result-corners .rc.tr { top: 5px; right: 5px; border-width: 2px 2px 0 0; }
+.result-corners .rc.bl { bottom: 5px; left: 5px; border-width: 0 0 2px 2px; }
+.result-corners .rc.br { bottom: 5px; right: 5px; border-width: 0 2px 2px 0; }
+
+/* Carimbo na foto */
+.photo-stamp {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+  padding: 1.5rem 1rem 0.7rem;
+  text-align: center; z-index: 2;
+}
+.stamp-title {
+  font-family: var(--font-title);
+  font-size: 1.1rem; font-style: italic; color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.stamp-date {
+  font-size: 0.55rem; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--white-dim);
+  margin-top: 0.2rem;
+}
+
+.result-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+}
+
+.btn-action {
+  padding: 0.9rem 2rem;
+  font-family: var(--font-body); font-size: 0.7rem;
+  font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase;
+  cursor: pointer; transition: 0.2s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-download {
+  background: var(--gold); color: var(--black);
+  border: 1px solid var(--gold);
+}
+.btn-download:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.btn-retry {
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--gold);
+}
+.btn-retry:hover { background: rgba(201,168,76,0.1); }
+.btn-home {
+  background: transparent; color: var(--white-dim);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-home:hover { border-color: rgba(255,255,255,0.5); color: var(--white); }
+
+/* ===== GALERIA ===== */
+#screenGallery {
+  position: fixed; inset: 0;
+  background: var(--black-soft);
+  z-index: 70;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s;
+  display: flex; flex-direction: column;
+}
+#screenGallery.active { opacity: 1; pointer-events: all; }
+
+.gallery-header {
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  flex-shrink: 0;
+}
+.gallery-title {
+  font-family: var(--font-title);
+  font-size: 1.2rem; font-style: italic; color: var(--gold);
+}
+
+.gallery-grid {
+  flex: 1; overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 4px; padding: 1rem;
+}
+.gallery-grid img {
+  width: 100%; aspect-ratio: 3/4;
+  object-fit: cover;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  border: 1px solid rgba(201,168,76,0.1);
+}
+.gallery-grid img:hover { opacity: 0.8; transform: scale(0.97); }
+.gallery-empty {
+  grid-column: 1/-1;
+  text-align: center; color: var(--white-dim);
+  font-size: 0.85rem; letter-spacing: 0.15em; padding: 3rem;
+}
+
+/* ===== CANVAS OCULTO ===== */
+#canvas { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Flash de câmera -->
+<div id="flash"></div>
+
+<!-- Canvas oculto para captura -->
+<canvas id="canvas"></canvas>
+
+<!-- ===== TELA INICIAL ===== -->
+<div id="screenIdle">
+  <div class="idle-border"></div>
+  <div class="idle-corner tl"></div>
+  <div class="idle-corner tr"></div>
+  <div class="idle-corner bl"></div>
+  <div class="idle-corner br"></div>
+
+  <p class="idle-eyebrow">Uma noite especial &bull; 2026</p>
+  <h1 class="idle-title">40 <em>Anos</em></h1>
+  <p class="idle-subtitle">O Filme da Minha Vida</p>
+  <div class="idle-divider"></div>
+  <p class="idle-subtitle" style="font-size:clamp(0.85rem,2vw,1.1rem)">Dalylah Rezende</p>
+
+  <button class="idle-btn" onclick="startCamera()">&#9654;&nbsp; Tirar Foto</button>
+  <p class="idle-instruction">Toque para registrar o momento</p>
+  <button class="btn-secondary" style="font-size:0.6rem" onclick="showGallery()">Ver Galeria de Fotos</button>
+</div>
+
+<!-- ===== CÂMERA ===== -->
+<div id="screenCamera">
+  <div class="camera-header">
+    <span class="camera-logo">Dalylah <em>40</em></span>
+    <span class="camera-counter" id="photoCount">0 fotos tiradas</span>
+  </div>
+
+  <div class="camera-viewport">
+    <video id="video" autoplay playsinline muted></video>
+    <div class="camera-frame">
+      <div class="frame-corner tl"></div>
+      <div class="frame-corner tr"></div>
+      <div class="frame-corner bl"></div>
+      <div class="frame-corner br"></div>
+    </div>
+    <div id="countdown"></div>
+  </div>
+
+  <div class="camera-footer">
+    <button class="btn-secondary" onclick="goHome()">&#8592; Voltar</button>
+    <button class="btn-capture" id="btnCapture" onclick="startCountdown()" title="Tirar foto"></button>
+    <button class="btn-secondary" onclick="showGallery()">Galeria</button>
+  </div>
+</div>
+
+<!-- ===== RESULTADO ===== -->
+<div id="screenResult">
+  <div class="result-frame" id="resultFrame">
+    <img id="resultImg" src="" alt="Sua foto">
+    <div class="result-corners">
+      <div class="rc tl"></div><div class="rc tr"></div>
+      <div class="rc bl"></div><div class="rc br"></div>
+    </div>
+    <div class="photo-stamp">
+      <div class="stamp-title">Dalylah 40 Anos</div>
+      <div class="stamp-date" id="stampDate"></div>
+    </div>
+  </div>
+
+  <div class="result-actions">
+    <a class="btn-action btn-download" id="btnDownload" download="dalylah40-foto.jpg">
+      &#8595; Salvar Foto
+    </a>
+    <button class="btn-action btn-retry" onclick="retryCamera()">
+      &#9654; Nova Foto
+    </button>
+    <button class="btn-action btn-home" onclick="goHome()">
+      &#8962; Início
+    </button>
+  </div>
+</div>
+
+<!-- ===== GALERIA ===== -->
+<div id="screenGallery">
+  <div class="gallery-header">
+    <span class="gallery-title">Galeria da Festa</span>
+    <button class="btn-secondary" onclick="hideGallery()">&#10005; Fechar</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid">
+    <p class="gallery-empty">Nenhuma foto ainda.<br>Seja o primeiro a tirar!</p>
+  </div>
+</div>
+
+<script>
+// ===== ESTADO =====
+let stream = null;
+let photoCount = 0;
+let photos = []; // { dataUrl, timestamp }
+let countdownTimer = null;
+
+const video      = document.getElementById('video');
+const canvas     = document.getElementById('canvas');
+const flash      = document.getElementById('flash');
+const countdown  = document.getElementById('countdown');
+const btnCapture = document.getElementById('btnCapture');
+const resultImg  = document.getElementById('resultImg');
+const btnDownload= document.getElementById('btnDownload');
+const stampDate  = document.getElementById('stampDate');
+const galleryGrid= document.getElementById('galleryGrid');
+
+// ===== NAVEGAÇÃO =====
+function show(id) {
+  ['screenIdle','screenCamera','screenResult','screenGallery'].forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.remove('active');
+    if(s === 'screenIdle') el.classList.remove('hidden');
+  });
+  if(id === 'screenIdle') {
+    // nada extra
+  } else {
+    document.getElementById('screenIdle').classList.add('hidden');
+    document.getElementById(id).classList.add('active');
+  }
+}
+
+function goHome() {
+  stopCamera();
+  show('screenIdle');
+}
+
+function showGallery() {
+  renderGallery();
+  show('screenGallery');
+}
+
+function hideGallery() {
+  if(stream) show('screenCamera');
+  else show('screenIdle');
+}
+
+function retryCamera() {
+  show('screenCamera');
+}
+
+// ===== CÂMERA =====
+async function startCamera() {
+  show('screenCamera');
+  if(stream) return; // já está rodando
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false
+    });
+    video.srcObject = stream;
+  } catch(err) {
+    console.error('Câmera:', err);
+    alert('Não foi possível acessar a câmera. Verifique as permissões do navegador.');
+    goHome();
+  }
+}
+
+function stopCamera() {
+  if(stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+    video.srcObject = null;
+  }
+  if(countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  countdown.classList.remove('show');
+  btnCapture.disabled = false;
+}
+
+// ===== CONTAGEM REGRESSIVA =====
+function startCountdown() {
+  if(btnCapture.disabled) return;
+  btnCapture.disabled = true;
+
+  let count = 3;
+  countdown.textContent = count;
+  countdown.classList.add('show');
+
+  countdownTimer = setInterval(() => {
+    count--;
+    if(count > 0) {
+      countdown.textContent = count;
+    } else {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      countdown.classList.remove('show');
+      capturePhoto();
+    }
+  }, 1000);
+}
+
+// ===== CAPTURA =====
+function capturePhoto() {
+  // Flash
+  flash.classList.add('active');
+  setTimeout(() => flash.classList.remove('active'), 150);
+
+  // Captura no canvas
+  const w = video.videoWidth  || 1280;
+  const h = video.videoHeight || 720;
+  canvas.width  = w;
+  canvas.height = h;
+
+  const ctx = canvas.getContext('2d');
+
+  // Espelha horizontalmente (igual ao espelho da câmera)
+  ctx.save();
+  ctx.translate(w, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, w, h);
+  ctx.restore();
+
+  // Adiciona marca d'água / carimbo
+  const dateStr = formatDate(new Date());
+  addStamp(ctx, w, h, dateStr);
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+
+  photoCount++;
+  document.getElementById('photoCount').textContent = `${photoCount} foto${photoCount !== 1 ? 's' : ''} tirada${photoCount !== 1 ? 's' : ''}`;
+
+  photos.push({ dataUrl, timestamp: new Date() });
+
+  // Tenta salvar no servidor
+  saveToServer(dataUrl);
+
+  // Mostra resultado
+  resultImg.src = dataUrl;
+  btnDownload.href = dataUrl;
+  stampDate.textContent = dateStr;
+  btnCapture.disabled = false;
+
+  show('screenResult');
+}
+
+function addStamp(ctx, w, h) {
+  // Gradiente inferior
+  const grad = ctx.createLinearGradient(0, h * 0.65, 0, h);
+  grad.addColorStop(0, 'rgba(0,0,0,0)');
+  grad.addColorStop(1, 'rgba(0,0,0,0.78)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, h * 0.65, w, h * 0.35);
+
+  // Linha dourada
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(w * 0.1, h - 70);
+  ctx.lineTo(w * 0.9, h - 70);
+  ctx.stroke();
+
+  // Título
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = `italic ${Math.round(w * 0.045)}px 'Playfair Display', Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('Dalylah 40 Anos', w / 2, h - 35);
+
+  // Data
+  ctx.fillStyle = '#C8C0B0';
+  ctx.font = `${Math.round(w * 0.022)}px 'Montserrat', sans-serif`;
+  ctx.fillText(formatDate(new Date()), w / 2, h - 12);
+
+  // Cantos decorativos
+  const m = 15, s = 30;
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 2.5;
+  [[m,m,1,1],[w-m,m,-1,1],[m,h-m,1,-1],[w-m,h-m,-1,-1]].forEach(([x,y,dx,dy]) => {
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+dx*s,y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y+dy*s); ctx.stroke();
+  });
+}
+
+// ===== SALVAR NO SERVIDOR =====
+async function saveToServer(dataUrl) {
+  try {
+    const blob = dataUrlToBlob(dataUrl);
+    const fd = new FormData();
+    const ts = Date.now();
+    fd.append('photo', blob, `dalylah40-${ts}.jpg`);
+    await fetch('/save-photo', { method: 'POST', body: fd });
+  } catch(e) {
+    // Servidor não suporta upload — apenas download local
+    console.log('Upload indisponível, use o botão Salvar Foto.');
+  }
+}
+
+function dataUrlToBlob(dataUrl) {
+  const [header, data] = dataUrl.split(',');
+  const mime = header.match(/:(.*?);/)[1];
+  const bytes = atob(data);
+  const arr = new Uint8Array(bytes.length);
+  for(let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+
+// ===== GALERIA =====
+function renderGallery() {
+  if(photos.length === 0) {
+    galleryGrid.innerHTML = '<p class="gallery-empty">Nenhuma foto ainda.<br>Seja o primeiro a tirar!</p>';
+    return;
+  }
+  galleryGrid.innerHTML = '';
+  [...photos].reverse().forEach((p, i) => {
+    const img = document.createElement('img');
+    img.src = p.dataUrl;
+    img.alt = `Foto ${photos.length - i}`;
+    img.title = formatDate(p.timestamp);
+    img.onclick = () => {
+      const a = document.createElement('a');
+      a.href = p.dataUrl;
+      a.download = `dalylah40-foto-${photos.length - i}.jpg`;
+      a.click();
+    };
+    galleryGrid.appendChild(img);
+  });
+}
+
+// ===== UTILITÁRIOS =====
+function formatDate(d) {
+  return d.toLocaleDateString('pt-BR', {
+    day: '2-digit', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+// ===== TECLADO =====
+document.addEventListener('keydown', e => {
+  if(e.code === 'Space' && document.getElementById('screenCamera').classList.contains('active')) {
+    e.preventDefault();
+    startCountdown();
+  }
+  if(e.code === 'Escape') goHome();
+});
+
+// Inicia na tela idle
+show('screenIdle');
+</script>
+</body>
+</html>
