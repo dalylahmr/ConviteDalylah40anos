@@ -76,8 +76,10 @@ html,body{width:100%;height:100%;background:var(--black);color:var(--white);font
 .res-frm img{display:block;width:100%;height:100%;object-fit:contain}
 .res-act{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center}
 .btn-a{padding:.85rem 1.8rem;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;border:1px solid}
-.btn-share{background:var(--gold);color:var(--black);border-color:var(--gold)}
-.btn-share:hover{background:var(--gold-light)}
+.btn-save{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.btn-save:hover{background:var(--gold-light)}
+.btn-share{background:transparent;color:var(--gold);border-color:var(--gold)}
+.btn-share:hover{background:rgba(201,168,76,.08)}
 .btn-retry{background:transparent;color:var(--gold);border-color:var(--gold)}
 .btn-retry:hover{background:rgba(201,168,76,.08)}
 .btn-home2{background:transparent;color:var(--white-dim);border-color:rgba(255,255,255,.18)}
@@ -142,6 +144,7 @@ html,body{width:100%;height:100%;background:var(--black);color:var(--white);font
 <div id="sRes">
   <div class="res-frm"><img id="rImg" src="" alt="Foto"></div>
   <div class="res-act">
+    <button class="btn-a btn-save" onclick="dl(curUrl)">&#8595; Salvar Foto</button>
     <button class="btn-a btn-share" onclick="sharePhoto()">&#8679; Compartilhar</button>
     <button class="btn-a btn-retry" onclick="retryCam()">&#9654; Nova Foto</button>
     <button class="btn-a btn-home2" onclick="goHome()">&#8962; Início</button>
