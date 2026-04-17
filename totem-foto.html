@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Totem Fotográfico — Dalylah 40 Anos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8C97A;
+  --black: #080808; --black-soft: #111111;
+  --white: #FAF6EE; --white-dim: #C8C0B0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;overflow:hidden;touch-action:manipulation}
+
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:9999;transition:opacity .05s}
+#flash.on{opacity:1}
+
+/* IDLE */
+#sIdle{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;padding:2rem;background:var(--black);z-index:100;transition:opacity .5s}
+#sIdle.hide{opacity:0;pointer-events:none}
+.ic{position:absolute;width:28px;height:28px;border-color:var(--gold);border-style:solid}
+.ic.tl{top:18px;left:18px;border-width:2px 0 0 2px}
+.ic.tr{top:18px;right:18px;border-width:2px 2px 0 0}
+.ic.bl{bottom:18px;left:18px;border-width:0 0 2px 2px}
+.ic.br{bottom:18px;right:18px;border-width:0 2px 2px 0}
+.ttl{font-family:'Playfair Display',serif;font-size:clamp(3rem,10vw,7rem);font-weight:900;color:#fff;line-height:1;text-align:center}
+.ttl em{color:var(--gold);font-style:italic;display:block}
+.sub{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.5rem);font-style:italic;color:var(--white-dim);letter-spacing:.1em;text-align:center}
+.divl{width:70px;height:1px;background:var(--gold);opacity:.5}
+.hint{font-size:.85rem;color:var(--white-dim);letter-spacing:.15em;text-transform:uppercase;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* BUTTONS */
+.btn-g{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:1rem 2.5rem;font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.btn-g:hover,.btn-g:active{background:var(--gold);color:var(--black)}
+.btn-d{background:transparent;border:1px solid rgba(201,168,76,.35);color:var(--white-dim);padding:.65rem 1.4rem;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.btn-d:hover{border-color:var(--gold);color:var(--gold)}
+
+/* CAMERA */
+#sCam{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--black);z-index:50;opacity:0;pointer-events:none;transition:opacity .5s}
+#sCam.on{opacity:1;pointer-events:all}
+.cam-hdr{width:100%;padding:.8rem 1.4rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.18);flex-shrink:0}
+.cam-logo{font-family:'Playfair Display',serif;font-size:.95rem;font-style:italic;color:var(--gold)}
+.cam-info{display:flex;align-items:center;gap:10px}
+#voiceDot{width:8px;height:8px;border-radius:50%;background:#444;transition:background .3s}
+#voiceDot.on{background:#4caf50;animation:vp 1.4s infinite}
+@keyframes vp{0%,100%{opacity:1}50%{opacity:.25}}
+#pcount{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--white-dim)}
+
+.cam-vp{position:relative;flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+#fOverlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#cdnum{position:absolute;font-family:'Playfair Display',serif;font-size:20vw;font-weight:900;color:var(--gold);text-shadow:0 0 60px rgba(201,168,76,.8);opacity:0;transform:scale(.8);transition:opacity .25s,transform .25s;z-index:10}
+#cdnum.on{opacity:1;transform:scale(1)}
+#fbadge{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);border:1px solid rgba(201,168,76,.5);color:var(--gold);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;padding:.28rem .8rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:6;white-space:nowrap}
+#fbadge.on{opacity:1}
+.fdots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:5}
+.fdot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,76,.25);border:1px solid var(--gold);cursor:pointer;transition:background .2s}
+.fdot.on{background:var(--gold)}
+#gfb{position:absolute;top:42%;left:50%;transform:translateX(-50%);background:rgba(201,168,76,.92);color:#000;font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:.42rem 1.1rem;border-radius:2px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;white-space:nowrap}
+#gfb.on{opacity:1}
+
+.cam-ftr{width:100%;padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(201,168,76,.18);flex-shrink:0}
+.btn-cap{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);background:transparent;cursor:pointer;position:relative;transition:transform .15s;flex-shrink:0}
+.btn-cap::after{content:'';position:absolute;inset:7px;border-radius:50%;background:var(--gold);transition:background .2s}
+.btn-cap:hover::after{background:var(--gold-light)}
+.btn-cap:active{transform:scale(.91)}
+.btn-cap:disabled{opacity:.35;cursor:not-allowed}
+
+/* RESULT */
+#sRes{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);z-index:80;opacity:0;pointer-events:none;transition:opacity .5s;padding:1rem;gap:1.4rem}
+#sRes.on{opacity:1;pointer-events:all}
+.res-frm{position:relative;max-width:min(90vw,480px);max-height:54vh;border:1px solid rgba(201,168,76,.28);box-shadow:0 0 55px rgba(201,168,76,.12)}
+.res-frm img{display:block;width:100%;height:100%;object-fit:contain}
+.res-act{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center}
+.btn-a{padding:.85rem 1.8rem;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;border:1px solid}
+.btn-save{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.btn-save:hover{background:var(--gold-light)}
+.btn-share{background:transparent;color:var(--gold);border-color:var(--gold)}
+.btn-share:hover{background:rgba(201,168,76,.08)}
+.btn-retry{background:transparent;color:var(--gold);border-color:var(--gold)}
+.btn-retry:hover{background:rgba(201,168,76,.08)}
+.btn-home2{background:transparent;color:var(--white-dim);border-color:rgba(255,255,255,.18)}
+.btn-home2:hover{border-color:rgba(255,255,255,.5);color:var(--white)}
+
+/* GALLERY */
+#sGal{position:fixed;inset:0;background:var(--black-soft);z-index:70;opacity:0;pointer-events:none;transition:opacity .5s;display:flex;flex-direction:column}
+#sGal.on{opacity:1;pointer-events:all}
+.gal-hdr{padding:.9rem 1.4rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.18);flex-shrink:0}
+.gal-ttl{font-family:'Playfair Display',serif;font-size:1.15rem;font-style:italic;color:var(--gold)}
+.gal-grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:3px;padding:.9rem}
+.gal-grid img{width:100%;aspect-ratio:3/4;object-fit:cover;cursor:pointer;transition:opacity .2s;border:1px solid rgba(201,168,76,.1)}
+.gal-grid img:hover{opacity:.75}
+.gal-empty{grid-column:1/-1;text-align:center;color:var(--white-dim);padding:3rem;font-size:.82rem;letter-spacing:.12em}
+
+#canvas{display:none}
+</style>
+</head>
+<body>
+<div id="flash"></div>
+<canvas id="canvas"></canvas>
+
+<!-- IDLE -->
+<div id="sIdle">
+  <div class="ic tl"></div><div class="ic tr"></div>
+  <div class="ic bl"></div><div class="ic br"></div>
+  <p style="font-size:.52rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);opacity:.8">Uma noite especial &bull; 2026</p>
+  <h1 class="ttl">40 <em>Anos</em></h1>
+  <p class="sub">O Filme da Minha Vida</p>
+  <div class="divl"></div>
+  <p class="sub" style="font-size:clamp(.85rem,2vw,1.1rem)">Dalylah Rezende</p>
+  <button class="btn-g" onclick="startCam()">&#9654;&nbsp; Tirar Foto</button>
+  <p class="hint">Toque ou diga &ldquo;Cheese&rdquo;</p>
+  <button class="btn-d" onclick="showGal()">Ver Galeria</button>
+</div>
+
+<!-- CAMERA -->
+<div id="sCam">
+  <div class="cam-hdr">
+    <span class="cam-logo">Dalylah <em style="font-style:italic">40</em></span>
+    <div class="cam-info">
+      <div id="voiceDot" title="Voz"></div>
+      <span id="pcount">0 fotos</span>
+    </div>
+  </div>
+  <div class="cam-vp" id="camVp">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="fOverlay"></canvas>
+    <div id="cdnum"></div>
+    <div id="fbadge"></div>
+    <div class="fdots" id="fdots"></div>
+    <div id="gfb"></div>
+  </div>
+  <div class="cam-ftr">
+    <button class="btn-d" onclick="goHome()">&#8592; Início</button>
+    <button class="btn-cap" id="btnCap" onclick="startCD(true)" title="Tirar foto"></button>
+    <button class="btn-d" onclick="showGal()">Galeria</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="sRes">
+  <div class="res-frm"><img id="rImg" src="" alt="Foto"></div>
+  <div class="res-act">
+    <button class="btn-a btn-save" onclick="dl(curUrl)">&#8595; Salvar Foto</button>
+    <button class="btn-a btn-share" onclick="sharePhoto()">&#8679; Compartilhar</button>
+    <button class="btn-a btn-retry" onclick="retryCam()">&#9654; Nova Foto</button>
+    <button class="btn-a btn-home2" onclick="goHome()">&#8962; Início</button>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div id="sGal">
+  <div class="gal-hdr">
+    <span class="gal-ttl">Galeria da Festa</span>
+    <button class="btn-d" onclick="hideGal()">&#10005; Fechar</button>
+  </div>
+  <div class="gal-grid" id="galGrid">
+    <p class="gal-empty">Nenhuma foto ainda.<br>Seja o primeiro!</p>
+  </div>
+</div>
+
+<script>
+/* ── FRAMES ── */
+const FRAMES = ['Clássica','Cinema','Art Déco','Polaroid','Ornate'];
+let curF = 0;
+
+function drawFrame(ctx, w, h, fi) {
+  if(fi===0) {
+    const g=ctx.createLinearGradient(0,h*.68,0,h);
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.8)');
+    ctx.fillStyle=g; ctx.fillRect(0,h*.68,w,h*.32);
+    corners(ctx,w,h,16,34,2.5);
+  } else if(fi===1) {
+    const s=h*.12;
+    ctx.fillStyle='rgba(0,0,0,.88)';
+    ctx.fillRect(0,0,w,s); ctx.fillRect(0,h-s,w,s);
+    ctx.fillStyle='#C9A84C';
+    for(let i=0;i<8;i++){
+      const x=(w/8)*i+(w/16)-w*.02;
+      rrect(ctx,x,s*.22,w*.04,s*.48,s*.12);
+      rrect(ctx,x,h-s+s*.22,w*.04,s*.48,s*.12);
+    }
+    ctx.strokeStyle='#C9A84C'; ctx.lineWidth=2;
+    ctx.strokeRect(w*.015,s+h*.012,w*.97,h-s*2-h*.024);
+  } else if(fi===2) {
+    ctx.strokeStyle='#C9A84C'; ctx.lineWidth=3;
+    ctx.strokeRect(13,13,w-26,h-26);
+    ctx.lineWidth=1; ctx.globalAlpha=.5;
+    ctx.strokeRect(22,22,w-44,h-44); ctx.globalAlpha=1;
+    const ds=Math.min(w,h)*.11;
+    [[16,16,1,1],[w-16,16,-1,1],[16,h-16,1,-1],[w-16,h-16,-1,-1]].forEach(([cx,cy,dx,dy])=>{
+      ctx.fillStyle='#C9A84C';
+      ctx.beginPath(); ctx.moveTo(cx,cy-dy*ds*.28); ctx.lineTo(cx+dx*ds*.28,cy); ctx.lineTo(cx,cy+dy*ds*.28); ctx.lineTo(cx-dx*ds*.28,cy); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle='#C9A84C'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(cx+dx*4,cy); ctx.lineTo(cx+dx*ds*.7,cy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx,cy+dy*4); ctx.lineTo(cx,cy+dy*ds*.7); ctx.stroke();
+    });
+    ctx.fillStyle='#C9A84C';
+    [[w/2,14,1],[w/2,h-14,-1]].forEach(([cx,cy,d])=>{
+      ctx.beginPath(); ctx.moveTo(cx-w*.07,cy); ctx.lineTo(cx,cy+d*9); ctx.lineTo(cx+w*.07,cy); ctx.fill();
+    });
+    const g=ctx.createLinearGradient(0,h*.7,0,h);
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.75)');
+    ctx.fillStyle=g; ctx.fillRect(0,h*.7,w,h*.3);
+  } else if(fi===3) {
+    const bw=w*.06,bt=h*.06,bb=h*.22;
+    ctx.fillStyle='#FAF6EE';
+    ctx.fillRect(0,0,w,bt); ctx.fillRect(0,0,bw,h);
+    ctx.fillRect(w-bw,0,bw,h); ctx.fillRect(0,h-bb,w,bb);
+    ctx.strokeStyle='rgba(201,168,76,.5)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(w*.18,h-bb+bb*.35); ctx.lineTo(w*.82,h-bb+bb*.35); ctx.stroke();
+  } else {
+    ctx.strokeStyle='#C9A84C'; ctx.lineWidth=4;
+    ctx.strokeRect(11,11,w-22,h-22);
+    ctx.lineWidth=1.5; ctx.globalAlpha=.4;
+    ctx.strokeRect(20,20,w-40,h-40); ctx.globalAlpha=1;
+    [[11,11],[w-11,11],[11,h-11],[w-11,h-11]].forEach(([cx,cy])=>{
+      ctx.strokeStyle='#C9A84C'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle='#C9A84C'; ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fill();
+    });
+    [[w/2,11],[w/2,h-11],[11,h/2],[w-11,h/2]].forEach(([cx,cy])=>{
+      ctx.fillStyle='#C9A84C'; ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#C9A84C'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.stroke();
+    });
+    const g=ctx.createLinearGradient(0,h*.65,0,h);
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.78)');
+    ctx.fillStyle=g; ctx.fillRect(0,h*.65,w,h*.35);
+  }
+}
+
+function drawStamp(ctx,w,h,fi) {
+  // Cinema frame: stamp goes above bottom strip (12% height)
+  const yBase = fi===1 ? h - h*.12 - 10 : h - 22;
+  ctx.fillStyle='#C9A84C';
+  ctx.font=`italic ${Math.round(w*.044)}px 'Playfair Display',Georgia,serif`;
+  ctx.textAlign='center';
+  ctx.fillText('Dalylah #40',w/2,yBase);
+}
+
+function corners(ctx,w,h,m,s,lw) {
+  ctx.strokeStyle='#C9A84C'; ctx.lineWidth=lw;
+  [[m,m,1,1],[w-m,m,-1,1],[m,h-m,1,-1],[w-m,h-m,-1,-1]].forEach(([x,y,dx,dy])=>{
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+dx*s,y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y+dy*s); ctx.stroke();
+  });
+}
+
+function rrect(ctx,x,y,w,h,r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); ctx.fill();
+}
+
+/* ── STATE ── */
+let stream=null, photos=[], photoCount=0;
+let cdTimer=null, capturing=false, curUrl=null;
+let overlayRAF=null;
+
+const video=document.getElementById('video');
+const canvas=document.getElementById('canvas');
+const fOverlay=document.getElementById('fOverlay');
+const flash=document.getElementById('flash');
+const cdnum=document.getElementById('cdnum');
+const btnCap=document.getElementById('btnCap');
+const rImg=document.getElementById('rImg');
+const galGrid=document.getElementById('galGrid');
+const voiceDot=document.getElementById('voiceDot');
+const gfb=document.getElementById('gfb');
+const fbadge=document.getElementById('fbadge');
+
+/* ── SCREENS ── */
+function show(id) {
+  ['sIdle','sCam','sRes','sGal'].forEach(s=>{
+    const el=document.getElementById(s);
+    el.classList.remove('on','hide');
+    if(s==='sIdle') el.classList.remove('hide');
+  });
+  if(id==='sIdle') return;
+  document.getElementById('sIdle').classList.add('hide');
+  document.getElementById(id).classList.add('on');
+}
+function goHome(){stopCam();show('sIdle')}
+function showGal(){renderGal();show('sGal')}
+function hideGal(){stream?show('sCam'):show('sIdle')}
+function retryCam(){show('sCam')}
+function getScreen(){
+  if(document.getElementById('sCam').classList.contains('on')) return 'cam';
+  if(document.getElementById('sRes').classList.contains('on')) return 'res';
+  if(document.getElementById('sGal').classList.contains('on')) return 'gal';
+  return 'idle';
+}
+
+/* ── CAMERA ── */
+async function startCam() {
+  show('sCam');
+  if(stream) return;
+  try {
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false});
+    video.srcObject=stream;
+    video.onloadedmetadata=()=>{ resizeOverlay(); startOverlay(); };
+    startMotion();
+  } catch(e) { alert('Câmera indisponível. Verifique permissões.'); goHome(); }
+}
+function stopCam() {
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;}
+  if(cdTimer){clearInterval(cdTimer);cdTimer=null;}
+  stopMotion();
+  if(overlayRAF){cancelAnimationFrame(overlayRAF);overlayRAF=null;}
+  cdnum.classList.remove('on'); btnCap.disabled=false; capturing=false;
+}
+function resizeOverlay(){fOverlay.width=fOverlay.offsetWidth;fOverlay.height=fOverlay.offsetHeight;}
+function startOverlay(){
+  function loop(){
+    if(!document.getElementById('sCam').classList.contains('on')){overlayRAF=null;return;}
+    const ctx=fOverlay.getContext('2d');
+    ctx.clearRect(0,0,fOverlay.width,fOverlay.height);
+    drawFrame(ctx,fOverlay.width,fOverlay.height,curF);
+    overlayRAF=requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+/* ── FRAME DOTS ── */
+function initDots(){
+  const c=document.getElementById('fdots'); c.innerHTML='';
+  FRAMES.forEach((_,i)=>{
+    const d=document.createElement('div'); d.className='fdot'+(i===curF?' on':'');
+    d.onclick=()=>setFrame(i); c.appendChild(d);
+  });
+}
+function setFrame(i){
+  curF=i;
+  document.querySelectorAll('.fdot').forEach((d,j)=>d.classList.toggle('on',j===i));
+  fbadge.textContent=FRAMES[i]; fbadge.classList.add('on');
+  clearTimeout(fbadge._t); fbadge._t=setTimeout(()=>fbadge.classList.remove('on'),1800);
+}
+function nextFrame(){setFrame((curF+1)%FRAMES.length);toast('Moldura: '+FRAMES[curF]);}
+
+/* ── COUNTDOWN & CAPTURE ── */
+function startCD(byUser=false){
+  if(capturing) return; capturing=true; btnCap.disabled=true;
+  let n=3; cdnum.textContent=n; cdnum.classList.add('on');
+  cdTimer=setInterval(()=>{
+    n--;
+    if(n>0){cdnum.textContent=n;}
+    else{clearInterval(cdTimer);cdTimer=null;cdnum.classList.remove('on');capture(byUser);}
+  },1000);
+}
+function capture(byUser=false){
+  flash.classList.add('on'); setTimeout(()=>flash.classList.remove('on'),140);
+  const w=video.videoWidth||1280, h=video.videoHeight||720;
+  canvas.width=w; canvas.height=h;
+  const ctx=canvas.getContext('2d');
+  ctx.save(); ctx.translate(w,0); ctx.scale(-1,1); ctx.drawImage(video,0,0,w,h); ctx.restore();
+  drawFrame(ctx,w,h,curF);
+  drawStamp(ctx,w,h,curF);
+  const url=canvas.toDataURL('image/jpeg',.92);
+  curUrl=url; photoCount++;
+  document.getElementById('pcount').textContent=photoCount+' foto'+(photoCount!==1?'s':'');
+  photos.push({url,ts:new Date()});
+  if(byUser) dl(url);
+  rImg.src=url; btnCap.disabled=false; capturing=false;
+  show('sRes');
+}
+function dl(url){
+  try{const a=document.createElement('a');a.href=url;a.download='dalylah40-'+Date.now()+'.jpg';document.body.appendChild(a);a.click();document.body.removeChild(a);}catch(e){}
+}
+
+/* ── SHARE ── */
+async function sharePhoto(){
+  if(!curUrl) return;
+  if(!navigator.share){ toast('Use o botão Salvar Foto'); return; }
+  try{
+    const blob=toBlob(curUrl);
+    const file=new File([blob],'dalylah40-foto.jpg',{type:'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Dalylah #40',text:'Minha foto da festa!'});
+    } else {
+      await navigator.share({title:'Dalylah #40',text:'Minha foto da festa!'});
+    }
+  } catch(e){ if(e.name!=='AbortError') toast('Use o botão Salvar Foto'); }
+}
+function toBlob(url){
+  const [h,d]=url.split(','),mime=h.match(/:(.*?);/)[1],b=atob(d);
+  const a=new Uint8Array(b.length);
+  for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i);
+  return new Blob([a],{type:mime});
+}
+
+/* ── VOICE ── */
+let recog=null;
+function startVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return;
+  recog=new SR(); recog.lang='pt-BR'; recog.continuous=true; recog.interimResults=false;
+  recog.onstart=()=>voiceDot.classList.add('on');
+  recog.onend=()=>{ voiceDot.classList.remove('on'); try{recog.start();}catch(e){} };
+  recog.onerror=(e)=>{ if(e.error==='not-allowed') return; };
+  recog.onresult=(e)=>{
+    const t=e.results[e.results.length-1][0].transcript.toLowerCase().trim();
+    handleVoice(t);
+  };
+  try{recog.start();}catch(e){}
+}
+function handleVoice(t){
+  const sc=getScreen();
+  if(/cheese|tirar foto|sorri|xis|foto/.test(t)){
+    toast('🎤 '+t);
+    if(sc==='cam') startCD(false);
+    else if(sc==='idle') startCam().then(()=>setTimeout(()=>startCD(false),600));
+  } else if(/nova foto|mais uma|repetir|outra/.test(t)){
+    toast('🎤 Nova foto');
+    if(sc==='res') retryCam(); else if(sc==='idle') startCam();
+  } else if(/compartilh/.test(t)){
+    toast('🎤 Compartilhar');
+    if(sc==='res') sharePhoto();
+  } else if(/trocar moldura|mudar moldura|próxima|troca moldura/.test(t)){
+    toast('🎤 Trocando moldura'); nextFrame();
+  } else if(/início|voltar/.test(t)){
+    goHome();
+  }
+}
+
+/* ── TOAST ── */
+let toastT=null;
+function toast(msg){
+  gfb.textContent=msg; gfb.classList.add('on');
+  clearTimeout(toastT); toastT=setTimeout(()=>gfb.classList.remove('on'),1600);
+}
+
+/* ── MOTION GESTURES ── */
+let mCanvas=null, mCtx=null, prevPx=null, mInv=null, handHist=[], gDebounce={};
+function startMotion(){
+  mCanvas=document.createElement('canvas'); mCanvas.width=64; mCanvas.height=48;
+  mCtx=mCanvas.getContext('2d'); prevPx=null; handHist=[];
+  mInv=setInterval(motionFrame,90);
+}
+function stopMotion(){ if(mInv){clearInterval(mInv);mInv=null;} prevPx=null; handHist=[]; }
+function motionFrame(){
+  if(!stream||!video.videoWidth||capturing) return;
+  const W=64,H=48;
+  mCtx.save(); mCtx.translate(W,0); mCtx.scale(-1,1); mCtx.drawImage(video,0,0,W,H); mCtx.restore();
+  const px=mCtx.getImageData(0,0,W,H).data;
+  if(!prevPx){prevPx=px.slice();return;}
+  let mx=0,my=0,cnt=0;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const i=(y*W+x)*4;
+    if(Math.abs(px[i]-prevPx[i])+Math.abs(px[i+1]-prevPx[i+1])+Math.abs(px[i+2]-prevPx[i+2])>28){
+      mx+=x/W; my+=y/H; cnt++;
+    }
+  }
+  prevPx=px.slice();
+  const ratio=cnt/(W*H);
+  if(ratio>.04){
+    const cx=mx/cnt, cy=my/cnt, now=Date.now();
+    handHist.push({x:cx,y:cy,t:now});
+    handHist=handHist.filter(p=>now-p.t<1300);
+    analyzeGesture(ratio,cx,cy);
+  }
+}
+function analyzeGesture(ratio,cx,cy){
+  const h=handHist; if(h.length<6) return;
+  const f=h[0],l=h[h.length-1],dt=l.t-f.t,dx=l.x-f.x,dy=l.y-f.y;
+  const sc=getScreen();
+  // Swipe direita→esquerda: Nova Foto (câmera ou resultado)
+  if(dx<-.38&&Math.abs(dy)<.18&&dt<800&&!deb('sl')){
+    deb('sl',1500); handHist=[];
+    toast('← Nova Foto');
+    if(sc==='res') retryCam();
+    else if(sc==='cam') startCD(false);
+    return;
+  }
+  // Swipe baixo→cima: Trocar Moldura
+  if(dy<-.32&&Math.abs(dx)<.18&&dt<800&&!deb('su')){
+    deb('su',1500); handHist=[]; nextFrame(); return;
+  }
+}
+function angDisp(h){
+  const mx=h.reduce((s,p)=>s+p.x,0)/h.length, my=h.reduce((s,p)=>s+p.y,0)/h.length;
+  let tot=0;
+  for(let i=1;i<h.length;i++){
+    let da=Math.atan2(h[i].y-my,h[i].x-mx)-Math.atan2(h[i-1].y-my,h[i-1].x-mx);
+    if(da>Math.PI)da-=2*Math.PI; if(da<-Math.PI)da+=2*Math.PI; tot+=da;
+  }
+  return tot;
+}
+function deb(k,ms){
+  if(ms===undefined) return gDebounce[k]&&Date.now()<gDebounce[k];
+  gDebounce[k]=Date.now()+ms;
+}
+
+/* ── TOUCH GESTURES ── */
+let tStart=null;
+document.addEventListener('touchstart',e=>{tStart={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()};});
+document.addEventListener('touchend',e=>{
+  if(!tStart) return;
+  const dx=e.changedTouches[0].clientX-tStart.x, dy=e.changedTouches[0].clientY-tStart.y;
+  const dist=Math.sqrt(dx*dx+dy*dy), dt=Date.now()-tStart.t, sc=getScreen();
+  if(dist>58&&dt<420){
+    if(Math.abs(dx)>Math.abs(dy)){
+      if(dx<0&&sc==='res'){toast('← Nova Foto');retryCam();}
+      else if(dx>0&&sc==='res'){toast('→ Compartilhar');sharePhoto();}
+      else if(dx<0&&sc==='cam'){toast('← Início');goHome();}
+    } else {
+      if(dy<0)(sc==='cam'||sc==='res')&&nextFrame();
+    }
+  } else if(dist<14&&dt<280&&sc==='cam'){
+    const vp=document.getElementById('camVp').getBoundingClientRect();
+    const tx=e.changedTouches[0].clientX,ty=e.changedTouches[0].clientY;
+    if(tx>=vp.left&&tx<=vp.right&&ty>=vp.top&&ty<=vp.bottom) startCD(true);
+  }
+  tStart=null;
+});
+
+/* ── KEYBOARD ── */
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&getScreen()==='cam'){e.preventDefault();startCD(true);}
+  if(e.code==='ArrowRight') nextFrame();
+  if(e.code==='Escape') goHome();
+});
+
+/* ── GALLERY ── */
+function renderGal(){
+  if(!photos.length){galGrid.innerHTML='<p class="gal-empty">Nenhuma foto ainda.<br>Seja o primeiro!</p>';return;}
+  galGrid.innerHTML='';
+  [...photos].reverse().forEach((p,i)=>{
+    const img=document.createElement('img'); img.src=p.url; img.alt='Foto '+(photos.length-i);
+    img.onclick=()=>{curUrl=p.url;rImg.src=p.url;show('sRes');};
+    galGrid.appendChild(img);
+  });
+}
+
+/* ── UTILS ── */
+function fmtDate(d){return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+/* ── INIT ── */
+initDots();
+startVoice();
+show('sIdle');
+</script>
+</body>
+</html>
