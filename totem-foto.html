@@ -135,7 +135,7 @@ html,body{width:100%;height:100%;background:var(--black);color:var(--white);font
   </div>
   <div class="cam-ftr">
     <button class="btn-d" onclick="goHome()">&#8592; Início</button>
-    <button class="btn-cap" id="btnCap" onclick="startCD(true)" title="Tirar foto"></button>
+    <button class="btn-cap" id="btnCap" onclick="startCD(false)" title="Tirar foto"></button>
     <button class="btn-d" onclick="showGal()">Galeria</button>
   </div>
 </div>
@@ -164,7 +164,7 @@ html,body{width:100%;height:100%;background:var(--black);color:var(--white);font
 
 <script>
 /* ── FRAMES ── */
-const FRAMES = ['Clássica','Cinema','Art Déco','Polaroid','Ornate'];
+const FRAMES = ['Clássica','Cinema','Art Déco','Polaroid'];
 let curF = 0;
 
 function drawFrame(ctx, w, h, fi) {
@@ -172,7 +172,7 @@ function drawFrame(ctx, w, h, fi) {
     const g=ctx.createLinearGradient(0,h*.68,0,h);
     g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.8)');
     ctx.fillStyle=g; ctx.fillRect(0,h*.68,w,h*.32);
-    corners(ctx,w,h,16,34,2.5);
+    arabescoSpiral(ctx,w,h);
   } else if(fi===1) {
     const s=h*.12;
     ctx.fillStyle='rgba(0,0,0,.88)';
@@ -212,30 +212,10 @@ function drawFrame(ctx, w, h, fi) {
     ctx.fillRect(w-bw,0,bw,h); ctx.fillRect(0,h-bb,w,bb);
     ctx.strokeStyle='rgba(201,168,76,.5)'; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(w*.18,h-bb+bb*.35); ctx.lineTo(w*.82,h-bb+bb*.35); ctx.stroke();
-  } else {
-    ctx.strokeStyle='#C9A84C'; ctx.lineWidth=4;
-    ctx.strokeRect(11,11,w-22,h-22);
-    ctx.lineWidth=1.5; ctx.globalAlpha=.4;
-    ctx.strokeRect(20,20,w-40,h-40); ctx.globalAlpha=1;
-    [[11,11],[w-11,11],[11,h-11],[w-11,h-11]].forEach(([cx,cy])=>{
-      ctx.strokeStyle='#C9A84C'; ctx.lineWidth=2;
-      ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.stroke();
-      ctx.fillStyle='#C9A84C'; ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fill();
-    });
-    [[w/2,11],[w/2,h-11],[11,h/2],[w-11,h/2]].forEach(([cx,cy])=>{
-      ctx.fillStyle='#C9A84C'; ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2); ctx.fill();
-      ctx.strokeStyle='#C9A84C'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.stroke();
-    });
-    const g=ctx.createLinearGradient(0,h*.65,0,h);
-    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.78)');
-    ctx.fillStyle=g; ctx.fillRect(0,h*.65,w,h*.35);
   }
 }
 
 function drawStamp(ctx,w,h,fi) {
-  // Cinema frame: stamp goes above bottom strip (12% height)
   const yBase = fi===1 ? h - h*.12 - 10 : h - 22;
   ctx.fillStyle='#C9A84C';
   ctx.font=`italic ${Math.round(w*.044)}px 'Playfair Display',Georgia,serif`;
@@ -243,11 +223,99 @@ function drawStamp(ctx,w,h,fi) {
   ctx.fillText('Dalylah #40',w/2,yBase);
 }
 
-function corners(ctx,w,h,m,s,lw) {
-  ctx.strokeStyle='#C9A84C'; ctx.lineWidth=lw;
-  [[m,m,1,1],[w-m,m,-1,1],[m,h-m,1,-1],[w-m,h-m,-1,-1]].forEach(([x,y,dx,dy])=>{
-    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+dx*s,y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y+dy*s); ctx.stroke();
+function drawOscar(ctx, w, h, fi) {
+  const oscH = h * 0.30;
+  const oW = oscH * 0.28;
+  const margin = w * 0.022;
+  const x = w - margin - oW * 0.14;
+  const y = fi === 1 ? h - h*0.12 - oscH*0.02 : h - h*0.015;
+  const lw = Math.max(1.2, oscH * 0.006);
+
+  ctx.save();
+  ctx.strokeStyle = '#FFE55C';
+  ctx.shadowColor = '#FFD500';
+  ctx.shadowBlur = oscH * 0.08;
+  ctx.lineWidth = lw;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.fillStyle = '#FFE55C';
+
+  // Pedestal
+  const pedH = oscH * 0.18, pedW = oW * 0.85;
+  ctx.beginPath(); ctx.ellipse(x, y - pedH*0.10, pedW/2, pedH*0.10, 0, 0, Math.PI*2); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x - pedW/2, y - pedH*0.18); ctx.lineTo(x - pedW*0.42, y - pedH);
+  ctx.moveTo(x + pedW/2, y - pedH*0.18); ctx.lineTo(x + pedW*0.42, y - pedH);
+  ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(x, y - pedH, pedW*0.42, pedH*0.08, 0, 0, Math.PI*2); ctx.stroke();
+
+  // Body (toga)
+  const bBase = y - pedH, bH = oscH * 0.38, bBot = oW * 0.72, bTop = oW * 0.52;
+  ctx.beginPath();
+  ctx.moveTo(x - bBot/2, bBase);
+  ctx.bezierCurveTo(x - bBot/2 - oW*.04, bBase - bH*.3, x - bTop/2 - oW*.02, bBase - bH*.7, x - bTop/2, bBase - bH);
+  ctx.lineTo(x + bTop/2, bBase - bH);
+  ctx.bezierCurveTo(x + bTop/2 + oW*.02, bBase - bH*.7, x + bBot/2 + oW*.04, bBase - bH*.3, x + bBot/2, bBase);
+  ctx.stroke();
+
+  // Waist
+  const waistY = bBase - bH * 0.38;
+  ctx.beginPath(); ctx.moveTo(x - bTop*.44, waistY); ctx.lineTo(x + bTop*.44, waistY); ctx.stroke();
+
+  // Chest
+  const cBase = bBase - bH, cH = oscH * 0.10, cW = bTop * 0.75;
+  ctx.beginPath();
+  ctx.moveTo(x - bTop/2, cBase); ctx.lineTo(x - cW/2, cBase - cH);
+  ctx.lineTo(x + cW/2, cBase - cH); ctx.lineTo(x + bTop/2, cBase);
+  ctx.stroke();
+
+  // Arms
+  const sY = cBase - cH;
+  [-1, 1].forEach(d => {
+    ctx.beginPath();
+    ctx.moveTo(x + d*cW/2, sY);
+    ctx.lineTo(x + d*(cW/2 + oW*.18), sY - oscH*.06);
+    ctx.lineTo(x + d*(cW/2 + oW*.14), sY - oscH*.12);
+    ctx.lineTo(x + d*(cW/2 - oW*.02), sY - oscH*.04);
+    ctx.stroke();
+  });
+
+  // Sword
+  ctx.beginPath(); ctx.moveTo(x, sY - oscH*.02); ctx.lineTo(x, sY - oscH*.24); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x - oW*.12, sY - oscH*.06); ctx.lineTo(x + oW*.12, sY - oscH*.06); ctx.stroke();
+
+  // Neck
+  const nH = oscH * 0.06, nW = oW * 0.20;
+  ctx.beginPath();
+  ctx.moveTo(x - nW/2, sY); ctx.lineTo(x - nW/2, sY - nH);
+  ctx.lineTo(x + nW/2, sY - nH); ctx.lineTo(x + nW/2, sY);
+  ctx.stroke();
+
+  // Head
+  const hR = oW * 0.22, hCY = sY - nH - hR * 0.85;
+  ctx.beginPath(); ctx.ellipse(x, hCY, hR, hR*1.1, 0, 0, Math.PI*2); ctx.stroke();
+
+  ctx.restore();
+}
+
+function arabescoSpiral(ctx, w, h) {
+  const sc = Math.min(w, h) / 420;
+  const m = Math.round(14 * sc);
+  ctx.strokeStyle = '#C9A84C'; ctx.fillStyle = '#C9A84C';
+  [[m,m,1,1],[w-m,m,-1,1],[m,h-m,1,-1],[w-m,h-m,-1,-1]].forEach(([ox,oy,sx,sy]) => {
+    ctx.save();
+    ctx.translate(ox, oy);
+    ctx.scale(sx * sc, sy * sc);
+    ctx.lineWidth = 1.5 / sc;
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.bezierCurveTo(18,-2,36,8,42,0); ctx.bezierCurveTo(48,-8,44,-18,36,-16); ctx.bezierCurveTo(28,-14,28,-6,34,-4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.bezierCurveTo(-2,18,8,36,0,42); ctx.bezierCurveTo(-8,48,-18,44,-16,36); ctx.bezierCurveTo(-14,28,-6,28,-4,34); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0,0,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(34,-4,2.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(-4,34,2.5,0,Math.PI*2); ctx.fill();
+    ctx.lineWidth = 2.5 / sc;
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(22,0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,22); ctx.stroke();
+    ctx.restore();
   });
 }
 
@@ -362,6 +430,7 @@ function capture(byUser=false){
   ctx.save(); ctx.translate(w,0); ctx.scale(-1,1); ctx.drawImage(video,0,0,w,h); ctx.restore();
   drawFrame(ctx,w,h,curF);
   drawStamp(ctx,w,h,curF);
+  drawOscar(ctx,w,h,curF);
   const url=canvas.toDataURL('image/jpeg',.92);
   curUrl=url; photoCount++;
   document.getElementById('pcount').textContent=photoCount+' foto'+(photoCount!==1?'s':'');
@@ -515,7 +584,7 @@ document.addEventListener('touchend',e=>{
   } else if(dist<14&&dt<280&&sc==='cam'){
     const vp=document.getElementById('camVp').getBoundingClientRect();
     const tx=e.changedTouches[0].clientX,ty=e.changedTouches[0].clientY;
-    if(tx>=vp.left&&tx<=vp.right&&ty>=vp.top&&ty<=vp.bottom) startCD(true);
+    if(tx>=vp.left&&tx<=vp.right&&ty>=vp.top&&ty<=vp.bottom) startCD(false);
   }
   tStart=null;
 });
