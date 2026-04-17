@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Preview — Silhueta Oscar</title>
+<style>
+body { background: #111; display: flex; flex-wrap: wrap; gap: 30px; padding: 30px; justify-content: center; font-family: sans-serif; }
+figure { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+figcaption { color: #C9A84C; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; }
+canvas { border: 1px solid #333; }
+</style>
+</head>
+<body>
+<script>
+function oscar(ctx, x, y, h, color) {
+  const w = h * 0.28;
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
+
+  const pedH = h * 0.18;
+  const pedW = w * 0.85;
+  const pedY = y;
+  ctx.beginPath();
+  ctx.ellipse(x, pedY - pedH * 0.12, pedW/2, pedH*0.12, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillRect(x - pedW/2, pedY - pedH, pedW, pedH);
+  ctx.beginPath();
+  ctx.ellipse(x, pedY - pedH, pedW/2, pedH*0.12, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  const bodyBase = pedY - pedH;
+  const bodyH = h * 0.38;
+  const bodyTopW = w * 0.52;
+  const bodyBotW = w * 0.72;
+  ctx.beginPath();
+  ctx.moveTo(x - bodyBotW/2, bodyBase);
+  ctx.lineTo(x + bodyBotW/2, bodyBase);
+  ctx.bezierCurveTo(x + bodyBotW/2 + w*0.04, bodyBase - bodyH*0.3, x + bodyTopW/2 + w*0.02, bodyBase - bodyH*0.7, x + bodyTopW/2, bodyBase - bodyH);
+  ctx.lineTo(x - bodyTopW/2, bodyBase - bodyH);
+  ctx.bezierCurveTo(x - bodyTopW/2 - w*0.02, bodyBase - bodyH*0.7, x - bodyBotW/2 - w*0.04, bodyBase - bodyH*0.3, x - bodyBotW/2, bodyBase);
+  ctx.closePath();
+  ctx.fill();
+
+  const waistY = bodyBase - bodyH * 0.38;
+  const waistW = bodyTopW * 0.88;
+  ctx.fillRect(x - waistW/2, waistY - h*0.025, waistW, h*0.04);
+
+  const chestBase = bodyBase - bodyH;
+  const chestH = h * 0.1;
+  const chestW = bodyTopW * 0.75;
+  ctx.beginPath();
+  ctx.moveTo(x - bodyTopW/2, chestBase);
+  ctx.lineTo(x + bodyTopW/2, chestBase);
+  ctx.lineTo(x + chestW/2, chestBase - chestH);
+  ctx.lineTo(x - chestW/2, chestBase - chestH);
+  ctx.closePath();
+  ctx.fill();
+
+  const shoulderY = chestBase - chestH;
+  ctx.beginPath();
+  ctx.moveTo(x - chestW/2, shoulderY);
+  ctx.lineTo(x - chestW/2 - w*0.18, shoulderY - h*0.06);
+  ctx.lineTo(x - chestW/2 - w*0.14, shoulderY - h*0.12);
+  ctx.lineTo(x - chestW/2 + w*0.02, shoulderY - h*0.04);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(x + chestW/2, shoulderY);
+  ctx.lineTo(x + chestW/2 + w*0.18, shoulderY - h*0.06);
+  ctx.lineTo(x + chestW/2 + w*0.14, shoulderY - h*0.12);
+  ctx.lineTo(x + chestW/2 - w*0.02, shoulderY - h*0.04);
+  ctx.closePath();
+  ctx.fill();
+
+  const swordBaseY = shoulderY - h * 0.02;
+  const swordH = h * 0.22;
+  const swordW = w * 0.055;
+  ctx.fillRect(x - swordW/2, swordBaseY - swordH, swordW, swordH);
+  ctx.fillRect(x - swordW*2.2, swordBaseY - h*0.04, swordW*4.4, h*0.025);
+  ctx.beginPath();
+  ctx.moveTo(x - swordW/2, swordBaseY - swordH);
+  ctx.lineTo(x, swordBaseY - swordH - h*0.03);
+  ctx.lineTo(x + swordW/2, swordBaseY - swordH);
+  ctx.fill();
+
+  const neckBaseY = shoulderY;
+  const neckH = h * 0.06;
+  const neckW = w * 0.2;
+  ctx.fillRect(x - neckW/2, neckBaseY - neckH, neckW, neckH);
+
+  const headR = w * 0.22;
+  const headCY = neckBaseY - neckH - headR * 0.85;
+  ctx.beginPath();
+  ctx.ellipse(x, headCY, headR, headR * 1.1, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function makePreview(label, W, H, goldAlpha, animated) {
+  const fig = document.createElement('figure');
+  const cap = document.createElement('figcaption');
+  cap.textContent = label;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  fig.appendChild(c); fig.appendChild(cap);
+  document.body.appendChild(fig);
+  const ctx = c.getContext('2d');
+  const oscH = H * 0.20;
+  function draw(alpha) {
+    ctx.fillStyle = '#1a1008';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(201,168,76,0.06)';
+    ctx.lineWidth = 1;
+    for(let i=0;i<W;i+=40){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,H); ctx.stroke(); }
+    for(let i=0;i<H;i+=40){ ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(W,i); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(0, H - oscH); ctx.lineTo(W, H - oscH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(201,168,76,0.4)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('20%', 6, H - oscH - 4);
+    const margin = W * 0.03;
+    const oscX = W - margin - oscH * 0.28 / 2;
+    const oscY = H - margin;
+    oscar(ctx, oscX, oscY, oscH, `rgba(201,168,76,${alpha})`);
+  }
+  if(animated) {
+    let t = 0;
+    setInterval(() => { t += 0.05; draw(0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t))); }, 50);
+  } else { draw(goldAlpha); }
+}
+
+makePreview('Paisagem 4:3 — estático', 480, 360, 0.75, false);
+makePreview('Retrato 3:4 — estático', 270, 360, 0.75, false);
+makePreview('Animado (pulsa suave)', 270, 360, 0.75, true);
+</script>
+</body>
+</html>
