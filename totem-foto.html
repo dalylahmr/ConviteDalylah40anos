@@ -377,15 +377,16 @@ function dl(url){
 /* ── SHARE ── */
 async function sharePhoto(){
   if(!curUrl) return;
+  if(!navigator.share){ toast('Use o botão Salvar Foto'); return; }
   try{
     const blob=toBlob(curUrl);
     const file=new File([blob],'dalylah40-foto.jpg',{type:'image/jpeg'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:'Dalylah 40 Anos',text:'Minha foto da festa!'});
-    } else if(navigator.share){
-      await navigator.share({title:'Dalylah 40 Anos',text:'Minha foto da festa!'});
-    } else { dl(curUrl); }
-  } catch(e){ if(e.name!=='AbortError') dl(curUrl); }
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Dalylah #40',text:'Minha foto da festa!'});
+    } else {
+      await navigator.share({title:'Dalylah #40',text:'Minha foto da festa!'});
+    }
+  } catch(e){ if(e.name!=='AbortError') toast('Use o botão Salvar Foto'); }
 }
 function toBlob(url){
   const [h,d]=url.split(','),mime=h.match(/:(.*?);/)[1],b=atob(d);
@@ -466,28 +467,20 @@ function motionFrame(){
   }
 }
 function analyzeGesture(ratio,cx,cy){
-  const h=handHist; if(h.length<4) return;
+  const h=handHist; if(h.length<6) return;
   const f=h[0],l=h[h.length-1],dt=l.t-f.t,dx=l.x-f.x,dy=l.y-f.y;
   const sc=getScreen();
-  if(dx<-.35&&Math.abs(dy)<.22&&dt<900&&!deb('sl')){
-    deb('sl',1300); handHist=[];
-    toast('← Nova Foto'); if(sc==='res') retryCam(); return;
-  }
-  if(dy<-.3&&Math.abs(dx)<.22&&dt<900&&!deb('su')){
-    deb('su',1300); handHist=[]; nextFrame(); return;
-  }
-  if(dx>.35&&Math.abs(dy)<.22&&dt<900&&!deb('sr')){
-    deb('sr',1300); handHist=[];
-    toast('→ Compartilhar'); if(sc==='res') sharePhoto(); return;
-  }
-  if(ratio>.13&&cx>.22&&cx<.78&&cy>.15&&cy<.85&&!deb('oh')){
-    deb('oh',3200);
-    if(sc==='cam'){toast('✋ Tirando foto!'); startCD(false);}
+  // Swipe direita→esquerda: Nova Foto (câmera ou resultado)
+  if(dx<-.38&&Math.abs(dy)<.18&&dt<800&&!deb('sl')){
+    deb('sl',1500); handHist=[];
+    toast('← Nova Foto');
+    if(sc==='res') retryCam();
+    else if(sc==='cam') startCD(false);
     return;
   }
-  if(h.length>=14&&dt>700&&!deb('ci')){
-    const ang=angDisp(h);
-    if(ang>2.9){deb('ci',2200);handHist=[];toast('○ Compartilhar');if(sc==='res')sharePhoto();}
+  // Swipe baixo→cima: Trocar Moldura
+  if(dy<-.32&&Math.abs(dx)<.18&&dt<800&&!deb('su')){
+    deb('su',1500); handHist=[]; nextFrame(); return;
   }
 }
 function angDisp(h){
