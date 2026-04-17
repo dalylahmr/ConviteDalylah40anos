@@ -26,28 +26,35 @@ function mk(label, fn) {
   document.body.appendChild(d);
 }
 
+// Opção 1: Espiral com flores
 mk('Opção 1 — Espiral', (ctx, w, h) => {
   ctx.strokeStyle = '#C9A84C';
   ctx.fillStyle = '#C9A84C';
   ctx.lineWidth = 1.5;
+  // canto superior esquerdo
   function corner(ctx, ox, oy, sx, sy) {
     ctx.save();
     ctx.translate(ox, oy);
     ctx.scale(sx, sy);
+    // braço horizontal
     ctx.beginPath();
     ctx.moveTo(0,0);
     ctx.bezierCurveTo(18,-2, 36,8, 42,0);
     ctx.bezierCurveTo(48,-8, 44,-18, 36,-16);
     ctx.bezierCurveTo(28,-14, 28,-6, 34,-4);
     ctx.stroke();
+    // braço vertical
     ctx.beginPath();
     ctx.moveTo(0,0);
     ctx.bezierCurveTo(-2,18, 8,36, 0,42);
     ctx.bezierCurveTo(-8,48, -18,44, -16,36);
     ctx.bezierCurveTo(-14,28, -6,28, -4,34);
     ctx.stroke();
+    // ponto central
     ctx.beginPath(); ctx.arc(0,0,3,0,Math.PI*2); ctx.fill();
+    // flores nas pontas
     [-4,34].forEach(p => { ctx.beginPath(); ctx.arc(p,p,2.5,0,Math.PI*2); ctx.fill(); });
+    // linha de canto
     ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(22,0); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,22); ctx.stroke();
@@ -59,22 +66,27 @@ mk('Opção 1 — Espiral', (ctx, w, h) => {
   corner(ctx, 186, 186, -1, -1);
 });
 
+// Opção 2: Mandala/Arabesco simétrico
 mk('Opção 2 — Mandala', (ctx, w, h) => {
   ctx.strokeStyle = '#C9A84C';
   ctx.fillStyle = '#C9A84C';
   function corner(ctx, ox, oy, sx, sy) {
     ctx.save(); ctx.translate(ox, oy); ctx.scale(sx, sy);
     ctx.lineWidth = 1.8;
+    // arco externo
     ctx.beginPath(); ctx.arc(0, 0, 28, 0, Math.PI/2); ctx.stroke();
     ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI/2); ctx.stroke();
+    // pétalas
     for(let a=0; a<Math.PI/2; a+=Math.PI/6) {
-      const rm=24;
+      const r1=20, r2=28, rm=24;
       const x=Math.cos(a+Math.PI/12)*rm, y=Math.sin(a+Math.PI/12)*rm;
       ctx.beginPath(); ctx.arc(x,y,3.5,0,Math.PI*2); ctx.fill();
     }
+    // braços retos
     ctx.lineWidth=3;
     ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(30,0); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,30); ctx.stroke();
+    // ponto
     ctx.beginPath(); ctx.arc(0,0,4,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
@@ -82,13 +94,16 @@ mk('Opção 2 — Mandala', (ctx, w, h) => {
   corner(ctx,12,188,1,-1); corner(ctx,188,188,-1,-1);
 });
 
+// Opção 3: Treliça / Islamic style
 mk('Opção 3 — Islâmico', (ctx, w, h) => {
   ctx.strokeStyle = '#C9A84C'; ctx.lineWidth = 1.5;
   ctx.fillStyle = '#C9A84C';
   function corner(ctx, ox, oy, sx, sy) {
     ctx.save(); ctx.translate(ox, oy); ctx.scale(sx, sy);
+    // Borda dupla em L
     ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(0,36); ctx.lineTo(0,0); ctx.lineTo(36,0); ctx.stroke();
     ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(0,28); ctx.lineTo(0,8); ctx.quadraticCurveTo(0,0,8,0); ctx.lineTo(28,0); ctx.stroke();
+    // Espiral interna
     ctx.lineWidth=1.5;
     ctx.beginPath();
     ctx.moveTo(8,8);
@@ -97,6 +112,7 @@ mk('Opção 3 — Islâmico', (ctx, w, h) => {
     ctx.stroke();
     ctx.beginPath(); ctx.arc(18,18,2.5,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.arc(8,8,2,0,Math.PI*2); ctx.fill();
+    // Curva de arabesco
     ctx.beginPath();
     ctx.moveTo(22,4);
     ctx.bezierCurveTo(30,4,34,10,30,16);
@@ -109,6 +125,7 @@ mk('Opção 3 — Islâmico', (ctx, w, h) => {
   corner(ctx,10,190,1,-1); corner(ctx,190,190,-1,-1);
 });
 
+// Opção 4: Folhagem barroca
 mk('Opção 4 — Barroco', (ctx, w, h) => {
   ctx.strokeStyle='#C9A84C'; ctx.fillStyle='#C9A84C';
   function corner(ctx, ox, oy, sx, sy) {
@@ -116,11 +133,15 @@ mk('Opção 4 — Barroco', (ctx, w, h) => {
     ctx.lineWidth=2.5;
     ctx.beginPath(); ctx.moveTo(0,40); ctx.lineTo(0,0); ctx.lineTo(40,0); ctx.stroke();
     ctx.lineWidth=1.5;
+    // folha esquerda
     ctx.beginPath(); ctx.moveTo(6,6); ctx.bezierCurveTo(0,16,-6,26,4,30); ctx.bezierCurveTo(10,32,14,24,6,6); ctx.stroke();
     ctx.fill();
+    // folha direita
     ctx.beginPath(); ctx.moveTo(6,6); ctx.bezierCurveTo(16,0,26,-6,30,4); ctx.bezierCurveTo(32,10,24,14,6,6); ctx.stroke();
     ctx.fill();
+    // caule central
     ctx.beginPath(); ctx.moveTo(6,6); ctx.bezierCurveTo(14,14,20,20,26,26); ctx.stroke();
+    // flor
     for(let a=0;a<Math.PI*2;a+=Math.PI/3){
       ctx.beginPath(); ctx.ellipse(26+Math.cos(a)*5,26+Math.sin(a)*5,3,5,a,0,Math.PI*2); ctx.fill();
     }
