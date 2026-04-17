@@ -539,12 +539,19 @@ function analyzeGesture(ratio,cx,cy){
   const h=handHist; if(h.length<6) return;
   const f=h[0],l=h[h.length-1],dt=l.t-f.t,dx=l.x-f.x,dy=l.y-f.y;
   const sc=getScreen();
-  // Swipe direita→esquerda: Nova Foto (câmera ou resultado)
+  // Swipe direita→esquerda: Nova Foto
   if(dx<-.38&&Math.abs(dy)<.18&&dt<800&&!deb('sl')){
     deb('sl',1500); handHist=[];
     toast('← Nova Foto');
     if(sc==='res') retryCam();
     else if(sc==='cam') startCD(false);
+    return;
+  }
+  // Swipe esquerda→direita: Salvar + Compartilhar (só na tela de resultado)
+  if(dx>.38&&Math.abs(dy)<.18&&dt<800&&sc==='res'&&!deb('sr')){
+    deb('sr',2000); handHist=[];
+    toast('→ Salvando + Compartilhar');
+    dl(curUrl); setTimeout(sharePhoto,400);
     return;
   }
   // Swipe baixo→cima: Trocar Moldura
@@ -576,7 +583,7 @@ document.addEventListener('touchend',e=>{
   if(dist>58&&dt<420){
     if(Math.abs(dx)>Math.abs(dy)){
       if(dx<0&&sc==='res'){toast('← Nova Foto');retryCam();}
-      else if(dx>0&&sc==='res'){toast('→ Compartilhar');sharePhoto();}
+      else if(dx>0&&sc==='res'){toast('→ Salvando + Compartilhar');dl(curUrl);setTimeout(sharePhoto,400);}
       else if(dx<0&&sc==='cam'){toast('← Início');goHome();}
     } else {
       if(dy<0)(sc==='cam'||sc==='res')&&nextFrame();
