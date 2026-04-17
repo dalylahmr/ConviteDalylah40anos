@@ -172,8 +172,6 @@ function drawFrame(ctx, w, h, fi) {
     const g=ctx.createLinearGradient(0,h*.68,0,h);
     g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.8)');
     ctx.fillStyle=g; ctx.fillRect(0,h*.68,w,h*.32);
-    ctx.strokeStyle='#C9A84C'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(w*.08,h-66); ctx.lineTo(w*.92,h-66); ctx.stroke();
     corners(ctx,w,h,16,34,2.5);
   } else if(fi===1) {
     const s=h*.12;
@@ -236,14 +234,13 @@ function drawFrame(ctx, w, h, fi) {
   }
 }
 
-function drawStamp(ctx,w,h) {
+function drawStamp(ctx,w,h,fi) {
+  // Cinema frame: stamp goes above bottom strip (12% height)
+  const yBase = fi===1 ? h - h*.12 - 10 : h - 22;
   ctx.fillStyle='#C9A84C';
   ctx.font=`italic ${Math.round(w*.044)}px 'Playfair Display',Georgia,serif`;
   ctx.textAlign='center';
-  ctx.fillText('Dalylah 40 Anos',w/2,h-34);
-  ctx.fillStyle='#C8C0B0';
-  ctx.font=`${Math.round(w*.019)}px 'Montserrat',sans-serif`;
-  ctx.fillText(fmtDate(new Date()),w/2,h-12);
+  ctx.fillText('Dalylah #40',w/2,yBase);
 }
 
 function corners(ctx,w,h,m,s,lw) {
@@ -364,7 +361,7 @@ function capture(byUser=false){
   const ctx=canvas.getContext('2d');
   ctx.save(); ctx.translate(w,0); ctx.scale(-1,1); ctx.drawImage(video,0,0,w,h); ctx.restore();
   drawFrame(ctx,w,h,curF);
-  drawStamp(ctx,w,h);
+  drawStamp(ctx,w,h,curF);
   const url=canvas.toDataURL('image/jpeg',.92);
   curUrl=url; photoCount++;
   document.getElementById('pcount').textContent=photoCount+' foto'+(photoCount!==1?'s':'');
