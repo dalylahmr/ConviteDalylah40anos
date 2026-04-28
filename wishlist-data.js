@@ -20,7 +20,7 @@ const ITEMS = [
   { id:'stick',      name:'Protetor Solar Stick FPS 55',   desc:'ADCOS — cor Ivory',                                              price:150, cat:'Beleza',         isCota:false, link:'https://www.adcos.com.br' },
   { id:'cicalfate',  name:'Cicalfate+ Creme Reparador',    desc:'Avène — proteção e reparação, 100ml',                            price:90,  cat:'Beleza',         isCota:false, link:'https://www.drogasil.com.br/avene-cicalfate-creme-reparador-protetor-100ml.html' },
   { id:'lipbalm',    name:'Hidratante Labial',              desc:'ADCOS Lip Balm',                                                 price:160, cat:'Beleza',         isCota:false, link:'https://www.adcos.com.br' },
-  { id:'massagem',   name:'Massagem Relaxante',             desc:'Sessão completa em clínica ou spa',                              price:180, cat:'Beleza',         isCota:false },
+  { id:'massagem',   name:'Massagem Relaxante',             desc:'Massagem Relaxante',                                             price:180, cat:'Beleza',         isCota:false },
   { id:'spa',        name:'Spa Day',                        desc:'Pacote completo de spa',                                         price:300, cat:'Beleza',         isCota:false },
   // MODA
   { id:'vans',       name:'Tênis Vans',                     desc:'Número 37 — modelo à escolha dentro da marca',                   price:350, cat:'Moda',           isCota:false, link:'https://www.vans.com.br' },
