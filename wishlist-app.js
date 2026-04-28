@@ -5,13 +5,13 @@
    3. Configurações do projeto → Seus apps → Web → copie o config aqui
    ──────────────────────────────────────────────────────────────────────── */
 const FIREBASE_CONFIG = {
-  apiKey: "COLE-AQUI",
-  authDomain: "SEU-PROJETO.firebaseapp.com",
-  databaseURL: "https://SEU-PROJETO-default-rtdb.firebaseio.com",
-  projectId: "SEU-PROJETO",
-  storageBucket: "SEU-PROJETO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:000000000000"
+  apiKey: "AIzaSyAZoASxRVyruoRUr74ax7UerD1nh4eDtJM",
+  authDomain: "wishlist-dalylah.firebaseapp.com",
+  databaseURL: "https://wishlist-dalylah-default-rtdb.firebaseio.com",
+  projectId: "wishlist-dalylah",
+  storageBucket: "wishlist-dalylah.firebasestorage.app",
+  messagingSenderId: "662817567619",
+  appId: "1:662817567619:web:a0661a8be6fb6ab938fcb6"
 };
 
 /* Acesso admin: adicione ?admin=dalylah2026 na URL */
