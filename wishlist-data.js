@@ -31,7 +31,9 @@ const ITEMS = [
   { id:'lily',       name:'Lily Essence Hidratante',        desc:'O Boticário — loção corporal',                                   price:120, cat:'Moda',           isCota:false, link:'https://www.boticario.com.br' },
   // EXPERIÊNCIAS
   { id:'restaurante',name:'Voucher Restaurante',            desc:'Jantar especial',                                                price:150, cat:'Experiências',   isCota:false },
-  { id:'dayuse',     name:'Day Use',                        desc:'Hotel ou resort com spa',                                        price:250, cat:'Experiências',   isCota:false },
+  { id:'dayuse',     name:'Day Use',                        desc:'Day Use',                                                        price:250, cat:'Experiências',   isCota:false },
+  { id:'renner',     name:'Voucher da Renner',              desc:'Voucher de compras na Renner',                                   price:0,   cat:'Moda',           isCota:false },
+  { id:'riachuelo',  name:'Voucher da Riachuelo',           desc:'Voucher de compras na Riachuelo',                                price:0,   cat:'Moda',           isCota:false },
   { id:'ensaio',     name:'Ensaio Fotográfico',             desc:'Sessão de fotos profissional',                                   price:300, cat:'Experiências',   isCota:false },
   { id:'aulas',      name:'Pacote de Aulas',                desc:'Yoga ou dança',                                                  price:300, cat:'Experiências',   isCota:false }
 ];

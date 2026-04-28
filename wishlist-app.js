@@ -119,8 +119,12 @@ function render() {
       </div>`;
     }).join('');
 
+    const notice = (cat === 'Festa' || cat === 'Comes e Bebes')
+      ? `<p class="cat-notice">Esses itens fazem parte da organização da festa e tenho algumas preferências especiais para cada um. Se quiser contribuir com algum deles, me chama para conversarmos antes, será um prazer! ✦</p>`
+      : '';
     return `<div class="category-section">
       <h2 class="category-title">${cat}</h2>
+      ${notice}
       <div class="items-grid">${cards}</div>
     </div>`;
   }).join('');
