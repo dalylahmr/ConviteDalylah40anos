@@ -106,7 +106,7 @@ function render() {
 
       return `<div class="card${reserved && !i.isCota ? ' is-reserved' : ''}">
         <div class="card-img-wrap">
-          <img src="${i.img}" alt="${i.name}" loading="lazy" onerror="this.style.opacity=0">
+          <div class="img-placeholder">A imagem deste item ainda não está disponível.</div>
         </div>
         <div class="card-body">
           <div class="card-name">${i.name}</div>
