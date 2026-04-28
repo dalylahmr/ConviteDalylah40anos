@@ -111,7 +111,6 @@ function render() {
         <div class="card-body">
           <div class="card-name">${i.name}</div>
           <div class="card-desc">${i.desc}</div>
-          <div class="card-price">${fmt(i.price)}</div>
           ${i.isCota ? `<div class="card-cota">${cotaList.length} cota${cotaList.length !== 1 ? 's' : ''} confirmada${cotaList.length !== 1 ? 's' : ''}</div>` : ''}
           ${i.link ? `<a class="card-link" href="${i.link}" target="_blank">Ver produto ↗</a>` : ''}
           ${isAdmin ? `<div class="admin-note">${adminTxt}</div>` : ''}
