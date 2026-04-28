@@ -120,7 +120,7 @@ function render() {
     }).join('');
 
     const notice = (cat === 'Festa' || cat === 'Comes e Bebes')
-      ? `<p class="cat-notice">Esses itens fazem parte da organização da festa e tenho algumas preferências especiais para cada um. Se quiser contribuir com algum deles, me chama para conversarmos antes, será um prazer! ✦</p>`
+      ? `<p class="cat-notice">Esses itens fazem parte da organização da festa e tenho algumas preferências especiais para cada um. Se quiser contribuir com algum deles, me chama para conversarmos. Vou ficar muito feliz! ✦</p>`
       : '';
     return `<div class="category-section">
       <h2 class="category-title">${cat}</h2>

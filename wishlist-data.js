@@ -23,7 +23,7 @@ const ITEMS = [
   { id:'sebastian',  name:'Sebastian Dark Oil Mask',        desc:'Máscara capilar com óleo de jojoba e argan — 150ml',             price:0,   cat:'Beleza',         isCota:false, link:'https://www.mercadolivre.com.br/dark-oil-lightweight-mask-mascara-150ml-sebastian-professional/p/MLB19971412' },
   { id:'amend',      name:'Amend Valorize Fluído Prolongador', desc:'Fluído prolongador do efeito liso com proteção térmica — 180ml',  price:0,   cat:'Beleza',         isCota:false, link:'https://www.amazon.com.br/Amend-Valorize-Prolongador-Efeito-Liso/dp/B0847T39DR' },
   { id:'massagem',   name:'Massagem Relaxante',             desc:'Massagem Relaxante',                                             price:180, cat:'Beleza',         isCota:false },
-  { id:'spa',        name:'Spa Day',                        desc:'Pacote completo de spa',                                         price:300, cat:'Beleza',         isCota:false },
+  { id:'spa',        name:'Spa Day',                        desc:'Spa Day, massagem relaxante, massagem nos pés, o que a sua alma pedir.',  price:300, cat:'Beleza',         isCota:false },
   // MODA
   { id:'vans',       name:'Tênis Vans',                     desc:'Número 37 — modelo à escolha dentro da marca',                   price:350, cat:'Moda',           isCota:false, link:'https://www.vans.com.br' },
   { id:'allstar',    name:'All Star Converse',              desc:'Número 37 — modelo clássico',                                    price:250, cat:'Moda',           isCota:false, link:'https://www.netshoes.com.br/busca/all-star-converse-feminino' },
@@ -34,7 +34,7 @@ const ITEMS = [
   { id:'dayuse',     name:'Day Use',                        desc:'Day Use',                                                        price:250, cat:'Experiências',   isCota:false },
   { id:'renner',     name:'Voucher da Renner',              desc:'Voucher de compras na Renner',                                   price:0,   cat:'Moda',           isCota:false },
   { id:'riachuelo',  name:'Voucher da Riachuelo',           desc:'Voucher de compras na Riachuelo',                                price:0,   cat:'Moda',           isCota:false },
-  { id:'ensaio',     name:'Ensaio Fotográfico',             desc:'Sessão de fotos profissional',                                   price:300, cat:'Experiências',   isCota:false },
+  { id:'ensaio',     name:'Ensaio Fotográfico',             desc:'Sessão de fotos',                                                price:300, cat:'Experiências',   isCota:false },
   { id:'aulas',      name:'Pacote de Aulas',                desc:'Yoga ou dança',                                                  price:300, cat:'Experiências',   isCota:false }
 ];
 
