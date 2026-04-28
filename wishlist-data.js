@@ -24,7 +24,12 @@ const ITEMS = [
   { id:'amend',      name:'Amend Valorize Fluído Prolongador', desc:'Fluído prolongador do efeito liso com proteção térmica, 180ml',  price:0,   cat:'Beleza',         isCota:false, link:'https://www.amazon.com.br/Amend-Valorize-Prolongador-Efeito-Liso/dp/B0847T39DR' },
   { id:'massagem',   name:'Massagem Relaxante',             desc:'Massagem Relaxante',                                             price:180, cat:'Beleza',         isCota:false },
   { id:'spa',        name:'Spa Day',                        desc:'Spa Day, massagem relaxante, massagem nos pés, o que a sua alma pedir.',  price:300, cat:'Beleza',         isCota:false },
+  { id:'loreal-repair-oil', name:"L'Oréal Absolut Repair Oil",     desc:'Óleo capilar 10 em 1 com óleo de gérmen de trigo, 90ml',          price:0,   cat:'Beleza',         isCota:false, link:'https://a.co/d/00BcJJ65' },
+  { id:'walkers-earmuff',   name:"Walker's Passive Slim Earmuff",  desc:'Protetor auricular slim',                                         price:0,   cat:'Beleza',         isCota:false, link:'https://a.co/d/0erAR5ME' },
+  { id:'loreal-inforcer',   name:"L'Oréal Inforcer B6 + Biotina",  desc:'Máscara condicionante antiquebra para cabelos fragilizados, 250g', price:0,   cat:'Beleza',         isCota:false, link:'https://www.mercadolivre.com.br/p/MLB19531266' },
   // MODA
+  { id:'sandalia-caramelo', name:'Sandália Mule Salto Bloco',       desc:'N 37, caramelo',                                                  price:0,   cat:'Moda',           isCota:false, link:'https://br.shp.ee/bi3GtBX9' },
+  { id:'sandalia-nude',     name:'Sandália Mule Salto Bloco',       desc:'N 37, nude',                                                      price:0,   cat:'Moda',           isCota:false, link:'https://www.sapatinhodeluxo.com.br/tamanco-nude-baby-salto-bloco-tira-dedo-3060-52_2/' },
   { id:'vans',       name:'Tênis Vans',                     desc:'Número 37, modelo à escolha',                   price:350, cat:'Moda',           isCota:false, link:'https://www.vans.com.br' },
   { id:'allstar',    name:'All Star Converse',              desc:'Número 37, modelo clássico',                                    price:250, cat:'Moda',           isCota:false, link:'https://www.netshoes.com.br/busca/all-star-converse-feminino' },
   { id:'perfume',    name:'Lancôme La Vie Est Belle',       desc:'Eau de Parfum 100ml',                                            price:650, cat:'Moda',           isCota:false, preReserved:true },
