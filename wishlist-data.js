@@ -20,6 +20,8 @@ const ITEMS = [
   { id:'stick',      name:'Protetor Solar Stick FPS 55',   desc:'ADCOS — cor Ivory',                                              price:150, cat:'Beleza',         isCota:false, link:'https://www.adcos.com.br' },
   { id:'cicalfate',  name:'Cicalfate+ Creme Reparador',    desc:'Avène — proteção e reparação, 100ml',                            price:90,  cat:'Beleza',         isCota:false, link:'https://www.drogasil.com.br/avene-cicalfate-creme-reparador-protetor-100ml.html' },
   { id:'lipbalm',    name:'Hidratante Labial',              desc:'ADCOS Lip Balm',                                                 price:160, cat:'Beleza',         isCota:false, link:'https://www.adcos.com.br' },
+  { id:'sebastian',  name:'Sebastian Dark Oil Mask',        desc:'Máscara capilar com óleo de jojoba e argan — 150ml',             price:0,   cat:'Beleza',         isCota:false, link:'https://www.mercadolivre.com.br/dark-oil-lightweight-mask-mascara-150ml-sebastian-professional/p/MLB19971412' },
+  { id:'amend',      name:'Amend Valorize Fluído Prolongador', desc:'Fluído prolongador do efeito liso com proteção térmica — 180ml',  price:0,   cat:'Beleza',         isCota:false, link:'https://www.amazon.com.br/Amend-Valorize-Prolongador-Efeito-Liso/dp/B0847T39DR' },
   { id:'massagem',   name:'Massagem Relaxante',             desc:'Massagem Relaxante',                                             price:180, cat:'Beleza',         isCota:false },
   { id:'spa',        name:'Spa Day',                        desc:'Pacote completo de spa',                                         price:300, cat:'Beleza',         isCota:false },
   // MODA
