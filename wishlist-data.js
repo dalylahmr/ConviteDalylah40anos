@@ -36,7 +36,7 @@ const ITEMS = [
   { id:'renner',     name:'Voucher da Renner',              desc:'Voucher de compras na Renner',                                   price:0,   cat:'Moda',           isCota:false },
   { id:'riachuelo',  name:'Voucher da Riachuelo',           desc:'Voucher de compras na Riachuelo',                                price:0,   cat:'Moda',           isCota:false },
   { id:'ensaio',     name:'Ensaio Fotográfico',             desc:'Sessão de fotos',                                                price:300, cat:'Experiências',   isCota:false },
-  { id:'aulas',      name:'Voucher de aulas avulsas',                desc:'Yoga ou dança',                                                  price:300, cat:'Experiências',   isCota:false }
+  { id:'aulas',      name:'Aulas de Yoga ou dança',                desc:'Voucher aula avulsa',                                                  price:300, cat:'Experiências',   isCota:false }
 ];
 
 const CATS = ['Beleza','Experiências','Moda','Festa','Comes e Bebes'];
