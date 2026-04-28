@@ -5,7 +5,7 @@ const ITEMS = [
   { id:'backdrop',   name:'Backdrop para Fotos',           desc:'Painel decorativo para fotos da festa',                            price:180, cat:'Festa',          isCota:true },
   { id:'iluminacao', name:'Iluminação Cênica',             desc:'Iluminação decorativa para o ambiente',                           price:150, cat:'Festa',          isCota:false },
   { id:'placa',      name:'Placa Decorativa',              desc:'"O Filme da Minha Vida" em acrílico dourado',                      price:140, cat:'Festa',          isCota:true },
-  { id:'baloes',     name:'Balões Metalizados',            desc:'Balões metalizados dourado e preto',                              price:80,  cat:'Festa',          isCota:true },
+  { id:'baloes',     name:'Balões Metalizados',            desc:'Balões metalizados dourado e preto',                              price:80,  cat:'Festa',          isCota:false, preReserved:true },
   { id:'fotografo',  name:'Fotógrafo',                    desc:'Sessão fotográfica profissional no evento',                       price:300, cat:'Festa',          isCota:true },
   // COMES E BEBES
   { id:'espumante',  name:'Espumante Brut',                desc:'Prosecco Brut, pack para a festa',                               price:120, cat:'Comes e Bebes',  isCota:true },
